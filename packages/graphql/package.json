@@ -1,0 +1,27 @@
+{
+  "name": "@deriving-ts/graphql",
+  "version": "0.0.0",
+  "description": "",
+  "main": "lib/main.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@deriving-ts/core": "^0.0.0"
+  },
+  "peerDependencies": {
+    "graphql": "^15.4.0"
+  },
+  "devDependencies": {
+    "ava": "^0.22.0",
+    "graphql": "^15.4.0"
+  },
+  "ava": {
+    "files": [
+      "lib/**/*.spec.js"
+    ]
+  }
+}

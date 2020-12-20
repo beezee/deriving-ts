@@ -1,0 +1,28 @@
+{
+  "name": "@deriving-ts/fast-check",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/main.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@deriving-ts/core": "^0.0.0"
+  },
+  "peerDependencies": {
+    "fast-check": "^2.10.0"
+  },
+  "devDependencies": {
+    "ava": "^0.22.0",
+    "ava-fast-check": "^4.0.0",
+    "fast-check": "^2.10.0"
+  },
+  "ava": {
+    "files": [
+      "lib/**/*.spec.js"
+    ]
+  }
+}
