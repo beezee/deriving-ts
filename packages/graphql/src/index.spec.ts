@@ -3,20 +3,21 @@ import * as lib from '@deriving-ts/core'
 import * as gql from './interpreter';
 import { buildASTSchema, printSchema } from 'graphql';
 
-type Ops = "str" | "num" | "nullable" | "array" | "recurse" | "dict"
+type Ops = "str" | "bool" | "num" | "nullable" | "array" | "recurse" | "dict"
 type Inputs = "GraphQL"
 
 type Alg<F extends lib.Target> = lib.Alg<F, Ops, Inputs>
 const thingProps = <F extends lib.Target>(T: Alg<F>) => ({
-  foo: T.nullable({ of: T.str({}) }),
-  bar: T.num({}),
+  foo: T.nullable({ of: T.str({GraphQL: {type: "ID"}}) }),
+  bar: T.num({GraphQL: {type: "Float"}}),
+  baz: T.nullable({ of: T.bool({}) }),
   tail: T.recurse('Thing', () => thing<F>(T),
       (of) => T.array({of: T.nullable({of})}), {}),
   tail2: T.recurse('Thing', () => thing<F>(T),
       (of) => T.array({of}), {})
 });
 
-type Thing = {foo: string | null, bar: number, tail: (Thing | null)[], tail2: Thing[]}
+type Thing = {foo: string | null, baz: boolean | null, bar: number, tail: (Thing | null)[], tail2: Thing[]}
 
 const thing = <F extends lib.Target>(T: Alg<F>): lib.Result<F, Thing> =>
   T.dict({GraphQL: {Named: 'Thing'}, props: () => thingProps(T)})

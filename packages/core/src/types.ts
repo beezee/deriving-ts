@@ -22,6 +22,13 @@ declare module './index' {
   }
 }
 
+// Dates
+declare module './index' {
+  interface _Alg<T extends Target, I extends Input> {
+    bool: (i: lib.InputOf<'bool', I, boolean>) => lib.Result<T, boolean>
+  }
+}
+
 // Nullable
 declare module './index' {
   interface _Alg<T extends Target, I extends Input> {

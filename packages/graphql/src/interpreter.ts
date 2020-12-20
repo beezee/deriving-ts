@@ -53,7 +53,8 @@ ast.FieldDefinitionNode =>
       ? node : gqlPrim(node.name.value)})
 
 type GQLAlg = lib.Alg<'GraphQL', 
-  "str" | "num" | "nullable" | "array" | "recurse" | "dict" | "gqlResolver",
+  "str" | "num" | "nullable" | "array" | "bool" |
+  "recurse" | "dict" | "gqlResolver",
   URI>
 
 export const GQL: () => GQLAlg & {definitions: ast.TypeDefinitionNode[]} = () => {
@@ -73,7 +74,9 @@ export const GQL: () => GQLAlg & {definitions: ast.TypeDefinitionNode[]} = () =>
   }
   return {
     definitions,
-    str: () => gqlPrim('String'), num: () => gqlPrim('Int'),
+    str: (i) => gqlPrim(i.GraphQL?.type || 'String'),
+    bool: () => gqlPrim('Boolean'),
+    num: (i) => gqlPrim(i.GraphQL?.type || "Int"),
     nullable: ({of}) => option(of),
     array: ({of}) => list(of),
     recurse: (id, f, map = (x) => x) => map(mem(id, f)),
