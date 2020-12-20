@@ -1,6 +1,6 @@
-# derive-ts
+# deriving-ts
 
-derive-ts is heavily inspired by morphic-ts and io-ts.
+deriving-ts is heavily inspired by morphic-ts and io-ts.
 
 ### Goals
 
