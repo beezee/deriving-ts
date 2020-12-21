@@ -36,7 +36,8 @@ type ThingNoRec = lib.TypeOf<typeof tnr>
 const takeThingNoRec = (_: ThingNoRec): void => undefined
 takeThingNoRec({foo: "hi", bar: 3})
 
-type ResolverAlg<F extends lib.Target> = lib.Alg<F, Ops | "gqlResolver" | "gqlScalar", Inputs>
+type ResolverAlg<F extends lib.Target> = lib.Alg<F, 
+  lib.AlgOps<Alg<F>> | "gqlResolver" | "gqlScalar", Inputs>
 
 const dateConfig: def.GraphQLScalarTypeConfig<Date, any> = {name: "Date"}
 const SDate = <F extends lib.Target>(T: ResolverAlg<F>) =>

@@ -32,6 +32,9 @@ export interface _Alg<T extends Target, I extends Input = never> {}
 export type Alg<T extends Target, K extends keyof _Alg<Target, Input>, I extends Input = never> =
   Pick<_Alg<T, I>, K>
 
+export type AlgOps<A> = A extends Alg<any, infer K, Input> ? K : never
+export type AlgInputs<A> = A extends Alg<any, keyof _Alg<Target, Input>, infer I> ? I : never
+
 export const Type: Alg<"Type", keyof _Alg<Target, Input>> = 
   new Proxy({}, {get: () => (...args: any) => (_: any) => undefined}) as any
 
