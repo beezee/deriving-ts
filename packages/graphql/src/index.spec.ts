@@ -1,6 +1,7 @@
 import test from "ava";
 import * as lib from '@deriving-ts/core'
 import * as gql from './interpreter';
+import type * as def from 'graphql/type/definition';
 import { buildASTSchema, printSchema } from 'graphql';
 
 type Ops = "str" | "bool" | "num" | "nullable" | "array" | "recurse" | "dict"
@@ -35,11 +36,13 @@ type ThingNoRec = lib.TypeOf<typeof tnr>
 const takeThingNoRec = (_: ThingNoRec): void => undefined
 takeThingNoRec({foo: "hi", bar: 3})
 
-type ResolverAlg<F extends lib.Target> = lib.Alg<F, Ops | "gqlResolver", Inputs>
+type ResolverAlg<F extends lib.Target> = lib.Alg<F, Ops | "gqlResolver" | "gqlScalar", Inputs>
 
+const dateConfig: def.GraphQLScalarTypeConfig<Date, any> = {name: "Date"}
 const tnrResolver = <F extends lib.Target>(T: ResolverAlg<F>) =>
   T.dict({GraphQL: {Named: 'ThingResolvers'}, props: () =>
     ({...thingNoRecProps(T),
+     time: T.gqlScalar({config: dateConfig}),
      count: T.gqlResolver({
       parent: thingNoRec(T), args: {
         GraphQL: {Named: "ThingCountInput"}, props: () => ({foo: T.str({})})},
@@ -49,7 +52,7 @@ const tnrResolver = <F extends lib.Target>(T: ResolverAlg<F>) =>
 const trs = tnrResolver(lib.Type)
 type ThingResolvers = lib.TypeOf<typeof trs>
 const takeThingResolvers = (_: ThingResolvers): void => undefined
-takeThingResolvers({foo: "hi", bar: 3,
+takeThingResolvers({foo: "hi", bar: 3, time: new Date(),
   count: (parent: ThingNoRec, args: {foo: string}, context: unknown) => Promise.resolve(2)})
 
 const schema = (x: any) =>
@@ -60,6 +63,6 @@ test("test", async t => {
   thingNoRec(Gql)
   thing(Gql)
   tnrResolver(Gql)
-  console.log(printSchema(schema(Gql.definitions)))
+  console.log(printSchema(schema(Gql.definitions())))
 });
 
