@@ -97,7 +97,7 @@
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
-        "version": "44b0c8ec186e213d133d8b92990ae2c998adc8dbf872eaaf650f2d79ae80e0b5",
+        "version": "6c7dfcdbbac8009d616114d6701cfdafa8c6fbd6dadb3b9d42c4591250368e52",
         "signature": "289e28ad542bdd817b8148b099d4647971534fc09a64c0759df2a986eee637dc",
         "affectsGlobalScope": false
       },

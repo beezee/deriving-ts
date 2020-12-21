@@ -39,10 +39,16 @@ takeThingNoRec({foo: "hi", bar: 3})
 type ResolverAlg<F extends lib.Target> = lib.Alg<F, Ops | "gqlResolver" | "gqlScalar", Inputs>
 
 const dateConfig: def.GraphQLScalarTypeConfig<Date, any> = {name: "Date"}
+const SDate = <F extends lib.Target>(T: ResolverAlg<F>) =>
+  T.gqlScalar({config: dateConfig})
+const sdateType = SDate(lib.Type)
+type SDate = lib.TypeOf<typeof sdateType>
+sdateType(new Date())
+
 const tnrResolver = <F extends lib.Target>(T: ResolverAlg<F>) =>
   T.dict({GraphQL: {Named: 'ThingResolvers'}, props: () =>
     ({...thingNoRecProps(T),
-     time: T.gqlScalar({config: dateConfig}),
+     time: T.nullable({of: SDate(T)}),
      count: T.gqlResolver({
       parent: thingNoRec(T), args: {
         GraphQL: {Named: "ThingCountInput"}, props: () => ({foo: T.str({})})},

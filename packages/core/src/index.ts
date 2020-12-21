@@ -33,6 +33,6 @@ export type Alg<T extends Target, K extends keyof _Alg<Target, Input>, I extends
   Pick<_Alg<T, I>, K>
 
 export const Type: Alg<"Type", keyof _Alg<Target, Input>> = 
-  new Proxy({}, {get: () => (...args: any) => null as any}) as any
+  new Proxy({}, {get: () => (...args: any) => (_: any) => undefined}) as any
 
 export type TypeOf<A> = A extends (a: infer B) => void ? B : never
