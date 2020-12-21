@@ -34,18 +34,16 @@ const thingNoRecProps = <F extends lib.Target>(T: Alg<F>) => {
 const thingNoRec = <F extends lib.Target>(T: Alg<F>) =>
   T.dict({props: () => thingNoRecProps(T)})
 
-const tnr = thingNoRec(lib.Type)
-type ThingNoRec = lib.TypeOf<typeof tnr>
+const assertTnr = thingNoRec(lib.Type)
+type ThingNoRec = lib.TypeOf<typeof assertTnr>
 const arbThingNoRec: fc.Arbitrary<ThingNoRec> = thingNoRec(fci.FastCheck())(0)
-const takeThingNoRec = (_: ThingNoRec): void => undefined
+const takeThingNoRec = (x: ThingNoRec): void => assertTnr(x)
 takeThingNoRec({foo: "hi", bar: 3})
 
-testProp('whatever', [arbThing, arbThingNoRec], (_, t: Thing, tnr: ThingNoRec) => {
-  console.log("HI HELLO")
-  /*console.log(tnr, null, 2)
-  console.log(t, null, 2)*/
-  /*console.log(JSON.stringify(tnr, null, 2))
-  console.log(JSON.stringify(t, null, 2));*/
+testProp('whatever', [arbThing, arbThingNoRec], (t, th: Thing, tnr: ThingNoRec) => {
+  console.log(JSON.stringify(th, null, 2))
+  console.log(JSON.stringify(tnr, null, 2))
+  t.true(true)
 });
 
 const takeThing = (_: Thing): void => undefined

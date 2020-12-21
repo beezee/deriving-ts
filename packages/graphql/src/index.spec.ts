@@ -31,9 +31,9 @@ const thingNoRecProps = <F extends lib.Target>(T: Alg<F>) => {
 const thingNoRec = <F extends lib.Target>(T: Alg<F>) =>
   T.dict({GraphQL: {Named: 'ThingNoRec'}, props: () => thingNoRecProps(T)})
 
-const tnr = thingNoRec(lib.Type)
-type ThingNoRec = lib.TypeOf<typeof tnr>
-const takeThingNoRec = (_: ThingNoRec): void => undefined
+const assertTnr = thingNoRec(lib.Type)
+type ThingNoRec = lib.TypeOf<typeof assertTnr>
+const takeThingNoRec = (x: ThingNoRec): void => assertTnr(x)
 takeThingNoRec({foo: "hi", bar: 3})
 
 type ResolverAlg<F extends lib.Target> = lib.Alg<F, 
@@ -56,9 +56,9 @@ const tnrResolver = <F extends lib.Target>(T: ResolverAlg<F>) =>
       context: T.dict({GraphQL: {Named: 'TRArgs'}, props: () => ({})}),
       output: T.num({})})})})
 
-const trs = tnrResolver(lib.Type)
-type ThingResolvers = lib.TypeOf<typeof trs>
-const takeThingResolvers = (_: ThingResolvers): void => undefined
+const assertTrs = tnrResolver(lib.Type)
+type ThingResolvers = lib.TypeOf<typeof assertTrs>
+const takeThingResolvers = (x: ThingResolvers): void => assertTrs(x)
 takeThingResolvers({foo: "hi", bar: 3, time: new Date(),
   count: (parent: ThingNoRec, args: {foo: string}, context: unknown) => Promise.resolve(2)})
 
@@ -71,5 +71,6 @@ test("test", async t => {
   thing(Gql)
   tnrResolver(Gql)
   console.log(printSchema(schema(Gql.definitions())))
+  t.true(true)
 });
 

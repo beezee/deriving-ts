@@ -551,18 +551,18 @@
         "signature": "27a1acd003b64718aaf6cf04cdee0c2ecebdcfbf3582e6046aeb9f149f1815e4",
         "affectsGlobalScope": false
       },
-      "../../node_modules/ava/types/generated.d.ts": {
-        "version": "0cc05706a685f83257d1adf1a7890341205e21f061c208eaf54e27f0805c8a82",
-        "signature": "0cc05706a685f83257d1adf1a7890341205e21f061c208eaf54e27f0805c8a82",
+      "./node_modules/ava/index.d.ts": {
+        "version": "0ceec7923fb2a6e540f73682c7acffe9124c9c3517a02eac27632844b8a61251",
+        "signature": "0ceec7923fb2a6e540f73682c7acffe9124c9c3517a02eac27632844b8a61251",
         "affectsGlobalScope": false
       },
-      "../../node_modules/ava-fast-check/lib/ava-fast-check.d.ts": {
+      "./node_modules/ava-fast-check/lib/ava-fast-check.d.ts": {
         "version": "35e0dbede482cfc7961560947b331470cbed337dcd656ed0ea49d34bfb4b8049",
         "signature": "35e0dbede482cfc7961560947b331470cbed337dcd656ed0ea49d34bfb4b8049",
         "affectsGlobalScope": false
       },
       "./src/index.spec.ts": {
-        "version": "818f015b1a57c4faf8538d324699d180dd0fd3e7af442d57d7f8677240701b72",
+        "version": "efe4fc15c161f4f4faa4899871b3538a29ede60097995182e37be6e00f9070a4",
         "signature": "e04d938303fe7fa3851a60d608014912163108a8045713ebbe0a6acac28bf40c",
         "affectsGlobalScope": false
       },
@@ -575,6 +575,11 @@
         "version": "61ab041dd163db1d45921e62dd176bdfea5e9e984c34c202189d8d07b929f58a",
         "signature": "61ab041dd163db1d45921e62dd176bdfea5e9e984c34c202189d8d07b929f58a",
         "affectsGlobalScope": true
+      },
+      "../../node_modules/@types/normalize-package-data/index.d.ts": {
+        "version": "c9ad058b2cc9ce6dc2ed92960d6d009e8c04bef46d3f5312283debca6869f613",
+        "signature": "c9ad058b2cc9ce6dc2ed92960d6d009e8c04bef46d3f5312283debca6869f613",
+        "affectsGlobalScope": false
       }
     },
     "options": {
@@ -599,10 +604,6 @@
       ],
       "../../node_modules/@types/node/inspector.d.ts": [
         "../../node_modules/@types/node/index.d.ts"
-      ],
-      "../../node_modules/ava-fast-check/lib/ava-fast-check.d.ts": [
-        "../../node_modules/ava/types/generated.d.ts",
-        "../../node_modules/fast-check/lib/types/fast-check.d.ts"
       ],
       "../../node_modules/fast-check/lib/types/check/arbitrary/arrayarbitrary.d.ts": [
         "../../node_modules/fast-check/lib/types/check/arbitrary/definition/arbitrary.d.ts"
@@ -947,9 +948,13 @@
         "./src/inputs.ts",
         "./src/interpreter.ts"
       ],
+      "./node_modules/ava-fast-check/lib/ava-fast-check.d.ts": [
+        "../../node_modules/fast-check/lib/types/fast-check.d.ts",
+        "./node_modules/ava/index.d.ts"
+      ],
       "./src/index.spec.ts": [
-        "../../node_modules/ava-fast-check/lib/ava-fast-check.d.ts",
         "../core/lib/index.d.ts",
+        "./node_modules/ava-fast-check/lib/ava-fast-check.d.ts",
         "./src/interpreter.ts"
       ],
       "./src/index.ts": [
@@ -979,10 +984,6 @@
       "../../node_modules/@types/node/inspector.d.ts": [
         "../../node_modules/@types/node/index.d.ts"
       ],
-      "../../node_modules/ava-fast-check/lib/ava-fast-check.d.ts": [
-        "../../node_modules/ava/types/generated.d.ts",
-        "../../node_modules/fast-check/lib/types/fast-check.d.ts"
-      ],
       "../../node_modules/fast-check/lib/types/check/arbitrary/arrayarbitrary.d.ts": [
         "../../node_modules/fast-check/lib/types/check/arbitrary/definition/arbitrary.d.ts"
       ],
@@ -1326,6 +1327,10 @@
         "./src/inputs.ts",
         "./src/interpreter.ts"
       ],
+      "./node_modules/ava-fast-check/lib/ava-fast-check.d.ts": [
+        "../../node_modules/fast-check/lib/types/fast-check.d.ts",
+        "./node_modules/ava/index.d.ts"
+      ],
       "./src/index.ts": [
         "./src/inputs.ts",
         "./src/interpreter.ts"
@@ -1344,8 +1349,7 @@
     "semanticDiagnosticsPerFile": [
       "../../node_modules/@types/node/index.d.ts",
       "../../node_modules/@types/node/inspector.d.ts",
-      "../../node_modules/ava-fast-check/lib/ava-fast-check.d.ts",
-      "../../node_modules/ava/types/generated.d.ts",
+      "../../node_modules/@types/normalize-package-data/index.d.ts",
       "../../node_modules/fast-check/lib/types/check/arbitrary/arrayarbitrary.d.ts",
       "../../node_modules/fast-check/lib/types/check/arbitrary/asyncschedulerarbitrary.d.ts",
       "../../node_modules/fast-check/lib/types/check/arbitrary/bigintarbitrary.d.ts",
@@ -1453,6 +1457,8 @@
       "../core/lib/index.d.ts",
       "../core/lib/types.d.ts",
       "../core/lib/utils.d.ts",
+      "./node_modules/ava-fast-check/lib/ava-fast-check.d.ts",
+      "./node_modules/ava/index.d.ts",
       "./src/index.spec.ts",
       "./src/index.ts",
       "./src/inputs.ts",

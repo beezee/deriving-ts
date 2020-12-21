@@ -16,7 +16,7 @@
     "fast-check": "^2.10.0"
   },
   "devDependencies": {
-    "ava": "^0.22.0",
+    "ava": "^3.14.0",
     "ava-fast-check": "^4.0.0",
     "fast-check": "^2.10.0"
   },

@@ -617,7 +617,7 @@
         "affectsGlobalScope": false
       },
       "./src/index.spec.ts": {
-        "version": "c615dab8d6684f6459f291bf70f300bc2784cd18dcb1f14b11a3d322fac40f9b",
+        "version": "897c234850e0bbd7092bd25157f98f6fa742ca700ff6bd7c3dbc25b34099def0",
         "signature": "e04d938303fe7fa3851a60d608014912163108a8045713ebbe0a6acac28bf40c",
         "affectsGlobalScope": false
       },
@@ -630,6 +630,11 @@
         "version": "61ab041dd163db1d45921e62dd176bdfea5e9e984c34c202189d8d07b929f58a",
         "signature": "61ab041dd163db1d45921e62dd176bdfea5e9e984c34c202189d8d07b929f58a",
         "affectsGlobalScope": true
+      },
+      "../../node_modules/@types/normalize-package-data/index.d.ts": {
+        "version": "c9ad058b2cc9ce6dc2ed92960d6d009e8c04bef46d3f5312283debca6869f613",
+        "signature": "c9ad058b2cc9ce6dc2ed92960d6d009e8c04bef46d3f5312283debca6869f613",
+        "affectsGlobalScope": false
       }
     },
     "options": {
@@ -1691,6 +1696,7 @@
     "semanticDiagnosticsPerFile": [
       "../../node_modules/@types/node/index.d.ts",
       "../../node_modules/@types/node/inspector.d.ts",
+      "../../node_modules/@types/normalize-package-data/index.d.ts",
       "../../node_modules/ava/types/generated.d.ts",
       "../../node_modules/graphql/error/formaterror.d.ts",
       "../../node_modules/graphql/error/graphqlerror.d.ts",
