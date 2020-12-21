@@ -11,5 +11,7 @@
   "dependencies": {
     "typelevel-ts": "^0.4.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "ts-adt": "^2.0.2"
+  }
 }

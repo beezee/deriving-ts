@@ -81,14 +81,24 @@
         "signature": "9d122b7e8c1a5c72506eea50c0973cba55b92b5532d5cafa8a6ce2c547d57551",
         "affectsGlobalScope": true
       },
+      "../../node_modules/ts-adt/makeadt.d.ts": {
+        "version": "953cc990cb20a96ad6b836fae47925b176008230fe15ecb161fe7fe82b3fdaa4",
+        "signature": "953cc990cb20a96ad6b836fae47925b176008230fe15ecb161fe7fe82b3fdaa4",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/ava/types/generated.d.ts": {
+        "version": "0cc05706a685f83257d1adf1a7890341205e21f061c208eaf54e27f0805c8a82",
+        "signature": "0cc05706a685f83257d1adf1a7890341205e21f061c208eaf54e27f0805c8a82",
+        "affectsGlobalScope": false
+      },
       "../../node_modules/typelevel-ts/lib/index.d.ts": {
         "version": "dc6b7a15321df4e0115d221b3ac0a3a5e37e247801b9f028dc4c386a1456b24e",
         "signature": "dc6b7a15321df4e0115d221b3ac0a3a5e37e247801b9f028dc4c386a1456b24e",
         "affectsGlobalScope": false
       },
       "./src/types.ts": {
-        "version": "3546b1d7dc871b939ef0798632ff0d358d4642af099e79de0d745257a73017ed",
-        "signature": "b6857d77ea705be535dbea90aaf7846bd023e6666c1f74f0c7497fb4e53c7a6f",
+        "version": "8deee1791138a2dd77933d2670cda931d53f463aa56b058cc20388e85d16df63",
+        "signature": "2e4090cba9f4ffc9b999754544ef7c9334687eddfe31dec1d69a638457acee3d",
         "affectsGlobalScope": false
       },
       "./src/utils.ts": {
@@ -101,6 +111,11 @@
         "signature": "a669c0f721dd0243320c1a309f8cce873a64ec07573d3484b7b916510c17d825",
         "affectsGlobalScope": false
       },
+      "./src/index.spec.ts": {
+        "version": "8557c8a5b1ac28f6871feb8f30de6d8387d17e89a2ea73a09f88fc45d25238eb",
+        "signature": "e04d938303fe7fa3851a60d608014912163108a8045713ebbe0a6acac28bf40c",
+        "affectsGlobalScope": false
+      },
       "../../node_modules/@types/node/inspector.d.ts": {
         "version": "fc514174d61a5d9a9ccca41424ffd92f36ff3aa4616fd1fd4e26df51563f5749",
         "signature": "fc514174d61a5d9a9ccca41424ffd92f36ff3aa4616fd1fd4e26df51563f5749",
@@ -110,6 +125,11 @@
         "version": "61ab041dd163db1d45921e62dd176bdfea5e9e984c34c202189d8d07b929f58a",
         "signature": "61ab041dd163db1d45921e62dd176bdfea5e9e984c34c202189d8d07b929f58a",
         "affectsGlobalScope": true
+      },
+      "../../node_modules/@types/normalize-package-data/index.d.ts": {
+        "version": "c9ad058b2cc9ce6dc2ed92960d6d009e8c04bef46d3f5312283debca6869f613",
+        "signature": "c9ad058b2cc9ce6dc2ed92960d6d009e8c04bef46d3f5312283debca6869f613",
+        "affectsGlobalScope": false
       }
     },
     "options": {
@@ -134,6 +154,11 @@
       ],
       "../../node_modules/@types/node/inspector.d.ts": [
         "../../node_modules/@types/node/index.d.ts"
+      ],
+      "./src/index.spec.ts": [
+        "../../node_modules/ava/types/generated.d.ts",
+        "../../node_modules/ts-adt/makeadt.d.ts",
+        "./src/index.ts"
       ],
       "./src/index.ts": [
         "../../node_modules/typelevel-ts/lib/index.d.ts",
@@ -164,6 +189,9 @@
     "semanticDiagnosticsPerFile": [
       "../../node_modules/@types/node/index.d.ts",
       "../../node_modules/@types/node/inspector.d.ts",
+      "../../node_modules/@types/normalize-package-data/index.d.ts",
+      "../../node_modules/ava/types/generated.d.ts",
+      "../../node_modules/ts-adt/makeadt.d.ts",
       "../../node_modules/typelevel-ts/lib/index.d.ts",
       "../../node_modules/typescript/lib/lib.dom.d.ts",
       "../../node_modules/typescript/lib/lib.dom.iterable.d.ts",
@@ -181,6 +209,7 @@
       "../../node_modules/typescript/lib/lib.es6.d.ts",
       "../../node_modules/typescript/lib/lib.scripthost.d.ts",
       "../../node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
+      "./src/index.spec.ts",
       "./src/index.ts",
       "./src/types.ts",
       "./src/utils.ts"
