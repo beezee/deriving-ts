@@ -68,12 +68,13 @@ declare module './index' {
 };
 
 // Sum
-type Without<A, K> = K extends keyof A ? never : A
-
 declare module './index' {
   interface _Alg<T extends Target, I extends Input> {
+    sumMembers: <K extends string, A>(
+      key: K, props: {[k in keyof A]: Props<T, A[k]>}) =>
+        lib.Result<T, {[k in keyof A]: A[k] & {[x in K]: k}}>,
     sum: <K extends string, A>(
       key: K, props: {[k in keyof A]: Props<T, A[k]>}) =>
-        lib.Result<T, {[k in keyof A]: A[k] & {[x in K]: k}}>
+        lib.Result<T, {[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]>
   }
 }

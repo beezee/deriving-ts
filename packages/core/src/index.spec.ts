@@ -2,7 +2,8 @@ import { makeMatchers } from 'ts-adt/MakeADT';
 import test from "ava";
 import * as lib from './index';
 
-type Ops = "sum" | "str" | "bool" | "num" | "nullable" | "array" | "recurse" | "dict"
+type Ops = "sum" | "sumMembers" | "str" | "bool" | "num" | "nullable" | 
+  "array" | "recurse" | "dict"
 
 type Alg<F extends lib.Target> = lib.Alg<F, Ops>
 
@@ -24,16 +25,30 @@ const t3Props = <F extends lib.Target>(T: Alg<F>) => ({
   foo: T.nullable({ of: T.bool({}) }),
 });
 
+const adtMembers = <F extends lib.Target>(T: Alg<F>) =>
+  ({t1: t1Props(T), t2: t2Props(T), t3: t3Props(T)})
+
 const adt = <F extends lib.Target>(T: Alg<F>) =>
-  T.sum("type", {t1: t1Props(T), t2: t2Props(T), t3: t3Props(T)})
+  T.sumMembers("type", adtMembers(T))
+
+const sum = <F extends lib.Target>(T: Alg<F>) =>
+  T.sum("type", adtMembers(T))
+
+const assertSum = sum(lib.Type)
 
 const assertAdt = adt(lib.Type)
 type ADTM = lib.TypeOf<typeof assertAdt>
 type ADT = ADTM[keyof ADTM]
+
+const to = (x: ADT) => assertSum(x)
+const from = (x: lib.TypeOf<typeof assertSum>) => to(x)
+
 const takeAdt = (x: ADT): void => undefined
 takeAdt({foo: "hi", bar: 3, baz: true, type: "t1"})
+
 const takeT2 = (x: ADTM["t2"]): void => undefined
 takeT2({bar: null, baz: 2, quux: false, type: "t2"})
+
 const matchI = makeMatchers("type")[2]
 const x: string | null = matchI<ADT>(
   {bar: null, baz: 2, quux: false, type: "t2"})(
