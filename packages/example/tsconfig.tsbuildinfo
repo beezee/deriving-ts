@@ -162,8 +162,8 @@
         "affectsGlobalScope": false
       },
       "../graphql/lib/interpreter.d.ts": {
-        "version": "cd90d07d2b03d97746f9ec5b5302bd9e4e550e570e7c3d0fbd8e041757da9688",
-        "signature": "cd90d07d2b03d97746f9ec5b5302bd9e4e550e570e7c3d0fbd8e041757da9688",
+        "version": "fe4997d5f723503fe3ffab7b086874e8f2da079fc7b9538d7fdd217f1111cfb1",
+        "signature": "fe4997d5f723503fe3ffab7b086874e8f2da079fc7b9538d7fdd217f1111cfb1",
         "affectsGlobalScope": false
       },
       "../graphql/lib/index.d.ts": {
@@ -621,74 +621,9 @@
         "signature": "b7c0dbe38168796e92e958bd0c8536e545aecdca23cc92ab7af2caa9ec4b1218",
         "affectsGlobalScope": false
       },
-      "../../node_modules/@types/node/inspector.d.ts": {
-        "version": "fc514174d61a5d9a9ccca41424ffd92f36ff3aa4616fd1fd4e26df51563f5749",
-        "signature": "fc514174d61a5d9a9ccca41424ffd92f36ff3aa4616fd1fd4e26df51563f5749",
-        "affectsGlobalScope": false
-      },
-      "../../node_modules/@types/node/index.d.ts": {
-        "version": "61ab041dd163db1d45921e62dd176bdfea5e9e984c34c202189d8d07b929f58a",
-        "signature": "61ab041dd163db1d45921e62dd176bdfea5e9e984c34c202189d8d07b929f58a",
-        "affectsGlobalScope": true
-      },
-      "../../node_modules/@types/range-parser/index.d.ts": {
-        "version": "4e88b833be14c7f384e0dcd57bb30acd799e8e34d212635d693e41a75a71164b",
-        "signature": "4e88b833be14c7f384e0dcd57bb30acd799e8e34d212635d693e41a75a71164b",
-        "affectsGlobalScope": false
-      },
-      "../../node_modules/@types/qs/index.d.ts": {
-        "version": "c236451df6139a965bb9b8fba15a43a8bebf4400ca589998e2bdc5e1291fa0f9",
-        "signature": "c236451df6139a965bb9b8fba15a43a8bebf4400ca589998e2bdc5e1291fa0f9",
-        "affectsGlobalScope": false
-      },
-      "../../node_modules/@types/express-serve-static-core/index.d.ts": {
-        "version": "ae8d1b919cc922283c52b0c5a3404ef4ffd9eeda1202254b6295e4a87acb8fee",
-        "signature": "ae8d1b919cc922283c52b0c5a3404ef4ffd9eeda1202254b6295e4a87acb8fee",
-        "affectsGlobalScope": true
-      },
-      "../../node_modules/@types/mime/index.d.ts": {
-        "version": "be27a64e821a3e5af838650e4aa25805c60f057d0c37a9762c378d19d364b3e6",
-        "signature": "be27a64e821a3e5af838650e4aa25805c60f057d0c37a9762c378d19d364b3e6",
-        "affectsGlobalScope": false
-      },
-      "../../node_modules/@types/serve-static/index.d.ts": {
-        "version": "3b02517f9be71f255eadab9892406055d069167891f1e1ea16c96c4ff1ddda01",
-        "signature": "3b02517f9be71f255eadab9892406055d069167891f1e1ea16c96c4ff1ddda01",
-        "affectsGlobalScope": false
-      },
-      "../../node_modules/@types/connect/index.d.ts": {
-        "version": "81c14b89fa607b86dd726e2e3e91360cf8155ce97468404324d404a5bd65b2eb",
-        "signature": "81c14b89fa607b86dd726e2e3e91360cf8155ce97468404324d404a5bd65b2eb",
-        "affectsGlobalScope": false
-      },
-      "../../node_modules/@types/body-parser/index.d.ts": {
-        "version": "ebddbd167c2fabd0151f50e5df94ca6d845149c47521280d8867afe3429dd078",
-        "signature": "ebddbd167c2fabd0151f50e5df94ca6d845149c47521280d8867afe3429dd078",
-        "affectsGlobalScope": false
-      },
-      "../../node_modules/@types/express/index.d.ts": {
-        "version": "924732dfbdfd120ee07cf733c7c65018f24ce9ddf06ed9ccf3cad8fdc2e33585",
-        "signature": "924732dfbdfd120ee07cf733c7c65018f24ce9ddf06ed9ccf3cad8fdc2e33585",
-        "affectsGlobalScope": false
-      },
-      "../../node_modules/apollo-server-env/dist/fetch.d.ts": {
-        "version": "d0c0df73d616f061b0ad9438b6e714b818af58b26c06e076719859dd7648514f",
-        "signature": "d0c0df73d616f061b0ad9438b6e714b818af58b26c06e076719859dd7648514f",
-        "affectsGlobalScope": false
-      },
-      "../../node_modules/apollo-server-env/dist/url.d.ts": {
-        "version": "1405854caa9cf70783113872afb1072091331d1bcdc01dd541389170f2f4e291",
-        "signature": "1405854caa9cf70783113872afb1072091331d1bcdc01dd541389170f2f4e291",
-        "affectsGlobalScope": false
-      },
-      "../../node_modules/apollo-server-env/dist/typescript-utility-types.d.ts": {
-        "version": "1835fccd13a829c665e2fa4e09f5f6d114dd769ea7c8f974edb9dcc63449ac3a",
-        "signature": "1835fccd13a829c665e2fa4e09f5f6d114dd769ea7c8f974edb9dcc63449ac3a",
-        "affectsGlobalScope": false
-      },
-      "../../node_modules/apollo-server-env/dist/index.d.ts": {
-        "version": "60cf0d8fdeb387919902b4c310d3df7ebf170123fc00b889ad4d7385703686d2",
-        "signature": "60cf0d8fdeb387919902b4c310d3df7ebf170123fc00b889ad4d7385703686d2",
+      "../../node_modules/graphql-scalars/mocks.d.ts": {
+        "version": "127084205460e013c6dda028fda8224fd94dffeab5dbe5ac4e8ac58c90791242",
+        "signature": "127084205460e013c6dda028fda8224fd94dffeab5dbe5ac4e8ac58c90791242",
         "affectsGlobalScope": false
       },
       "../../node_modules/graphql/version.d.ts": {
@@ -1134,6 +1069,336 @@
       "../../node_modules/graphql/index.d.ts": {
         "version": "5375bb0209e24fa9f1968d78202308dc4d7762bd1a85c50e32caedd83b49c70d",
         "signature": "5375bb0209e24fa9f1968d78202308dc4d7762bd1a85c50e32caedd83b49c70d",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/iso-date/date.d.ts": {
+        "version": "362e83520f1394de7e7bc025c28a7a0f2fe8c50ae27d3764c13b3abd7f9339a5",
+        "signature": "362e83520f1394de7e7bc025c28a7a0f2fe8c50ae27d3764c13b3abd7f9339a5",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/iso-date/time.d.ts": {
+        "version": "38e844cf1bdf3b9fd83ecba12cdd15d11e7ab1332ad02164edf911dbce11de42",
+        "signature": "38e844cf1bdf3b9fd83ecba12cdd15d11e7ab1332ad02164edf911dbce11de42",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/iso-date/datetime.d.ts": {
+        "version": "abcebd7fd8195403afc95b5c53afa1737761d26f39fafaf2aeb83ea495d74f4d",
+        "signature": "abcebd7fd8195403afc95b5c53afa1737761d26f39fafaf2aeb83ea495d74f4d",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/timestamp.d.ts": {
+        "version": "200febfd0c71a0c2139ade190a0ff9a09a9030015b0bb7f4718bae0967af7859",
+        "signature": "200febfd0c71a0c2139ade190a0ff9a09a9030015b0bb7f4718bae0967af7859",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/utcoffset.d.ts": {
+        "version": "79fb423ae433ee23109aca9cfc34ef10e632d114b5c698b391aaa9941040eb83",
+        "signature": "79fb423ae433ee23109aca9cfc34ef10e632d114b5c698b391aaa9941040eb83",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/iso-date/duration.d.ts": {
+        "version": "c618752eae6deaf3394bda970bae620ab6764e9f0d21d84c8bfb4e845ca8611f",
+        "signature": "c618752eae6deaf3394bda970bae620ab6764e9f0d21d84c8bfb4e845ca8611f",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/localdate.d.ts": {
+        "version": "6db5ba404edb28c1abd8a227081c7377b863464e8c80fa3ec8487a74dd4b543a",
+        "signature": "6db5ba404edb28c1abd8a227081c7377b863464e8c80fa3ec8487a74dd4b543a",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/localtime.d.ts": {
+        "version": "abc46b27ed78b06139d77c8865a9858929da7e37de4f4639d036b5eddb3787d5",
+        "signature": "abc46b27ed78b06139d77c8865a9858929da7e37de4f4639d036b5eddb3787d5",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/localendtime.d.ts": {
+        "version": "8659312ce3747b0c6d6efde2c1a0e577c6039ef30291e61c6124b8915f124d15",
+        "signature": "8659312ce3747b0c6d6efde2c1a0e577c6039ef30291e61c6124b8915f124d15",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/emailaddress.d.ts": {
+        "version": "ec5fa8b921017c32c4ad32b5a34403114fbf11c9431d4031fadfc65217311daf",
+        "signature": "ec5fa8b921017c32c4ad32b5a34403114fbf11c9431d4031fadfc65217311daf",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/negativefloat.d.ts": {
+        "version": "2558f9ddef90ae4790b179a765be302cab0c7fa34fe212c7bbf3a1cf81fe40e7",
+        "signature": "2558f9ddef90ae4790b179a765be302cab0c7fa34fe212c7bbf3a1cf81fe40e7",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/negativeint.d.ts": {
+        "version": "7adcd4259d4d33d25818ab12045194601fbfd2fd904d04c1f1525eac05d45f4f",
+        "signature": "7adcd4259d4d33d25818ab12045194601fbfd2fd904d04c1f1525eac05d45f4f",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/nonemptystring.d.ts": {
+        "version": "3dd98af5a30663455f4c16f77eff8d52d3777e55ba4b1f68b889cf063c25a3da",
+        "signature": "3dd98af5a30663455f4c16f77eff8d52d3777e55ba4b1f68b889cf063c25a3da",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/nonnegativefloat.d.ts": {
+        "version": "ac5d138c49fd2c2350afe11961f8f41c7ffe2b568ddf6e966d6b458ae644c31e",
+        "signature": "ac5d138c49fd2c2350afe11961f8f41c7ffe2b568ddf6e966d6b458ae644c31e",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/nonnegativeint.d.ts": {
+        "version": "0b5a618a87780ebb42736959506082e75c53d09ea9778a00249f3e38a15338ed",
+        "signature": "0b5a618a87780ebb42736959506082e75c53d09ea9778a00249f3e38a15338ed",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/nonpositivefloat.d.ts": {
+        "version": "fb53145e4e0d223e67345a4992058b7a368b0e00a5997d2155c8514d8afb34c3",
+        "signature": "fb53145e4e0d223e67345a4992058b7a368b0e00a5997d2155c8514d8afb34c3",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/nonpositiveint.d.ts": {
+        "version": "ff47622bbe249704ac05cf0a4fe86cc629e0d17c915b5f7b8c88987ec619fc6c",
+        "signature": "ff47622bbe249704ac05cf0a4fe86cc629e0d17c915b5f7b8c88987ec619fc6c",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/phonenumber.d.ts": {
+        "version": "9818323f822bd33ca4857698c8d812aa3933e1c93adafbc66b1978632c5fc8ec",
+        "signature": "9818323f822bd33ca4857698c8d812aa3933e1c93adafbc66b1978632c5fc8ec",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/positivefloat.d.ts": {
+        "version": "2c43899d9510395b735a6997750a918c778ed435d164d766fc71d436fa8bd873",
+        "signature": "2c43899d9510395b735a6997750a918c778ed435d164d766fc71d436fa8bd873",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/positiveint.d.ts": {
+        "version": "419f8e52c05a6d21ba255c2854553cb5a805ee7cb1c25f16c7fd891cd3fea4fc",
+        "signature": "419f8e52c05a6d21ba255c2854553cb5a805ee7cb1c25f16c7fd891cd3fea4fc",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/postalcode.d.ts": {
+        "version": "f35ea99a0ba278644949ae01e2961997e374cb5c5e6b3e71abe7db9987d9fe00",
+        "signature": "f35ea99a0ba278644949ae01e2961997e374cb5c5e6b3e71abe7db9987d9fe00",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/unsignedfloat.d.ts": {
+        "version": "0f9ed9269de918cf2f37bb7031271cb70f48fab7ba76c6ccf9fc87de531a7c86",
+        "signature": "0f9ed9269de918cf2f37bb7031271cb70f48fab7ba76c6ccf9fc87de531a7c86",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/unsignedint.d.ts": {
+        "version": "c64cafd861b7ad5104380e40df3cf8de76087cb16644427dbe1554a304c819cd",
+        "signature": "c64cafd861b7ad5104380e40df3cf8de76087cb16644427dbe1554a304c819cd",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/url.d.ts": {
+        "version": "fd82ce04ccb2e1058872b2b42b041579121ef482781455469c1df8203c8296b7",
+        "signature": "fd82ce04ccb2e1058872b2b42b041579121ef482781455469c1df8203c8296b7",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/bigint.d.ts": {
+        "version": "57e395fa2f5e1193a339995865a235a9fca3a393a655c82bc62c35626104fdca",
+        "signature": "57e395fa2f5e1193a339995865a235a9fca3a393a655c82bc62c35626104fdca",
+        "affectsGlobalScope": true
+      },
+      "../../node_modules/graphql-scalars/scalars/byte.d.ts": {
+        "version": "b3eef9f2b75c3f451257b29c13546f9a07323325b9dca87bfd0bd6b18db434cd",
+        "signature": "b3eef9f2b75c3f451257b29c13546f9a07323325b9dca87bfd0bd6b18db434cd",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/long.d.ts": {
+        "version": "05dd121cc9a95b4b663d6bdf81ba4748312c67a2c18fd818204fa549f14591fa",
+        "signature": "05dd121cc9a95b4b663d6bdf81ba4748312c67a2c18fd818204fa549f14591fa",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/safeint.d.ts": {
+        "version": "06e6328e059c627fb5017d940a4c5b443d12d2c67b8af4a05360cb3214eb4c03",
+        "signature": "06e6328e059c627fb5017d940a4c5b443d12d2c67b8af4a05360cb3214eb4c03",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/uuid.d.ts": {
+        "version": "84717d4e18d77a646f4436f1becc520e81c10f42673545cf17956464baad0dc9",
+        "signature": "84717d4e18d77a646f4436f1becc520e81c10f42673545cf17956464baad0dc9",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/guid.d.ts": {
+        "version": "6307669a5206b227735a213a15021b6b6112a2fc3659db9cbd8aa56acc46fc3e",
+        "signature": "6307669a5206b227735a213a15021b6b6112a2fc3659db9cbd8aa56acc46fc3e",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/hexadecimal.d.ts": {
+        "version": "6ef88d746ed447247ed049ce76229acc7ab98c585bda4ec90e66e459cc141fb4",
+        "signature": "6ef88d746ed447247ed049ce76229acc7ab98c585bda4ec90e66e459cc141fb4",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/hexcolorcode.d.ts": {
+        "version": "0757854fbb3e6f266eca7b093510200ac3e141a15cebba62f335a90e24162d48",
+        "signature": "0757854fbb3e6f266eca7b093510200ac3e141a15cebba62f335a90e24162d48",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/hsl.d.ts": {
+        "version": "dbbd0c4a3b3aa4817d19fe8a489686852fcf50387c34b9ca5508da19ab94254e",
+        "signature": "dbbd0c4a3b3aa4817d19fe8a489686852fcf50387c34b9ca5508da19ab94254e",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/hsla.d.ts": {
+        "version": "9fefcb1cdb20274f55ba8e7731c8cd99550851b5ddaac974dad365b6c302970a",
+        "signature": "9fefcb1cdb20274f55ba8e7731c8cd99550851b5ddaac974dad365b6c302970a",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/ipv4.d.ts": {
+        "version": "97d5cebf831e45abc37bcc7e7a51837879e1ff89c6d4b1c0ef4b296d7e0b6fe3",
+        "signature": "97d5cebf831e45abc37bcc7e7a51837879e1ff89c6d4b1c0ef4b296d7e0b6fe3",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/ipv6.d.ts": {
+        "version": "ea69ced9a02476d7ab01b1fd57c3b53aa9b51aa2656730c6e52f49fd8136a680",
+        "signature": "ea69ced9a02476d7ab01b1fd57c3b53aa9b51aa2656730c6e52f49fd8136a680",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/isbn.d.ts": {
+        "version": "2457cb3ca5075df4ca98a754a5ad11568b1f038803f54127813dc1f655008f00",
+        "signature": "2457cb3ca5075df4ca98a754a5ad11568b1f038803f54127813dc1f655008f00",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/mac.d.ts": {
+        "version": "b3b29306fa51a99b593c3fb36a02d93dee5ffcdccf44bc1d364cb7315b58a334",
+        "signature": "b3b29306fa51a99b593c3fb36a02d93dee5ffcdccf44bc1d364cb7315b58a334",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/port.d.ts": {
+        "version": "6e606bb426ffce773fef22e2895b9aa89a78f804c9c99ac2769c6635fd2bcc9e",
+        "signature": "6e606bb426ffce773fef22e2895b9aa89a78f804c9c99ac2769c6635fd2bcc9e",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/rgb.d.ts": {
+        "version": "241fd47440951d12f54a75f3bba12f5a61d48141c4102c9a59144a3ac9428efd",
+        "signature": "241fd47440951d12f54a75f3bba12f5a61d48141c4102c9a59144a3ac9428efd",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/rgba.d.ts": {
+        "version": "48bac6a2b299f3231431abf37b9321d56e8ba7b7f6e24e59e37c900f7b19a9f4",
+        "signature": "48bac6a2b299f3231431abf37b9321d56e8ba7b7f6e24e59e37c900f7b19a9f4",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/uscurrency.d.ts": {
+        "version": "e5b294f0cc894af60489db40ae6ee811ad7f3688e810a6a6d356343b2026fa88",
+        "signature": "e5b294f0cc894af60489db40ae6ee811ad7f3688e810a6a6d356343b2026fa88",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/currency.d.ts": {
+        "version": "6f8f4d725295fca746b94b6eb74f2dfb1b87655eedc868eea4168c0950700814",
+        "signature": "6f8f4d725295fca746b94b6eb74f2dfb1b87655eedc868eea4168c0950700814",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/json/json.d.ts": {
+        "version": "134f0f2ec2262c67272e912e219d222692ab0cf62ee4d5e7870aa81e516769e8",
+        "signature": "134f0f2ec2262c67272e912e219d222692ab0cf62ee4d5e7870aa81e516769e8",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/json/jsonobject.d.ts": {
+        "version": "372217818d89fdd7bbdb1bfb7575b41c7b3d2dc248867ed8f201f680022a39fd",
+        "signature": "372217818d89fdd7bbdb1bfb7575b41c7b3d2dc248867ed8f201f680022a39fd",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/iban.d.ts": {
+        "version": "20d67cfa46e7b5218efae53748b428852d36a1db4f7c6edc6455b80819a6acc5",
+        "signature": "20d67cfa46e7b5218efae53748b428852d36a1db4f7c6edc6455b80819a6acc5",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/objectid.d.ts": {
+        "version": "6e8cdd37e8ea0f5295e6d77bd9c2908d51f29f4f59b7e974b4e180fbee184452",
+        "signature": "6e8cdd37e8ea0f5295e6d77bd9c2908d51f29f4f59b7e974b4e180fbee184452",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/void.d.ts": {
+        "version": "d52311df182fdfae129c55d831cfe9d3dcf968bda577b31585ee39ebe30d3e31",
+        "signature": "d52311df182fdfae129c55d831cfe9d3dcf968bda577b31585ee39ebe30d3e31",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/scalars/index.d.ts": {
+        "version": "55e7bbcfb7041ba316c05383192ce6e0b6af039ed4911b7b3b43d29a6f92e7ad",
+        "signature": "55e7bbcfb7041ba316c05383192ce6e0b6af039ed4911b7b3b43d29a6f92e7ad",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/typedefs.d.ts": {
+        "version": "53de5beb091ca100628318dd156e1baa0485b1d2d502e47a971058f508a605ab",
+        "signature": "53de5beb091ca100628318dd156e1baa0485b1d2d502e47a971058f508a605ab",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/regularexpression.d.ts": {
+        "version": "94ef0e78af6505a40d9c6ac2597f9aabd9dbee3a8db7e0ee1ae9d3a74c5e83f5",
+        "signature": "94ef0e78af6505a40d9c6ac2597f9aabd9dbee3a8db7e0ee1ae9d3a74c5e83f5",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/graphql-scalars/index.d.ts": {
+        "version": "bc94a07567ab623b8296417562841ad2664cee2879f1744cde35b898cb0e0ebd",
+        "signature": "bc94a07567ab623b8296417562841ad2664cee2879f1744cde35b898cb0e0ebd",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/@types/node/inspector.d.ts": {
+        "version": "fc514174d61a5d9a9ccca41424ffd92f36ff3aa4616fd1fd4e26df51563f5749",
+        "signature": "fc514174d61a5d9a9ccca41424ffd92f36ff3aa4616fd1fd4e26df51563f5749",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/@types/node/index.d.ts": {
+        "version": "61ab041dd163db1d45921e62dd176bdfea5e9e984c34c202189d8d07b929f58a",
+        "signature": "61ab041dd163db1d45921e62dd176bdfea5e9e984c34c202189d8d07b929f58a",
+        "affectsGlobalScope": true
+      },
+      "../../node_modules/@types/range-parser/index.d.ts": {
+        "version": "4e88b833be14c7f384e0dcd57bb30acd799e8e34d212635d693e41a75a71164b",
+        "signature": "4e88b833be14c7f384e0dcd57bb30acd799e8e34d212635d693e41a75a71164b",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/@types/qs/index.d.ts": {
+        "version": "c236451df6139a965bb9b8fba15a43a8bebf4400ca589998e2bdc5e1291fa0f9",
+        "signature": "c236451df6139a965bb9b8fba15a43a8bebf4400ca589998e2bdc5e1291fa0f9",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/@types/express-serve-static-core/index.d.ts": {
+        "version": "ae8d1b919cc922283c52b0c5a3404ef4ffd9eeda1202254b6295e4a87acb8fee",
+        "signature": "ae8d1b919cc922283c52b0c5a3404ef4ffd9eeda1202254b6295e4a87acb8fee",
+        "affectsGlobalScope": true
+      },
+      "../../node_modules/@types/mime/index.d.ts": {
+        "version": "be27a64e821a3e5af838650e4aa25805c60f057d0c37a9762c378d19d364b3e6",
+        "signature": "be27a64e821a3e5af838650e4aa25805c60f057d0c37a9762c378d19d364b3e6",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/@types/serve-static/index.d.ts": {
+        "version": "3b02517f9be71f255eadab9892406055d069167891f1e1ea16c96c4ff1ddda01",
+        "signature": "3b02517f9be71f255eadab9892406055d069167891f1e1ea16c96c4ff1ddda01",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/@types/connect/index.d.ts": {
+        "version": "81c14b89fa607b86dd726e2e3e91360cf8155ce97468404324d404a5bd65b2eb",
+        "signature": "81c14b89fa607b86dd726e2e3e91360cf8155ce97468404324d404a5bd65b2eb",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/@types/body-parser/index.d.ts": {
+        "version": "ebddbd167c2fabd0151f50e5df94ca6d845149c47521280d8867afe3429dd078",
+        "signature": "ebddbd167c2fabd0151f50e5df94ca6d845149c47521280d8867afe3429dd078",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/@types/express/index.d.ts": {
+        "version": "924732dfbdfd120ee07cf733c7c65018f24ce9ddf06ed9ccf3cad8fdc2e33585",
+        "signature": "924732dfbdfd120ee07cf733c7c65018f24ce9ddf06ed9ccf3cad8fdc2e33585",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/apollo-server-env/dist/fetch.d.ts": {
+        "version": "d0c0df73d616f061b0ad9438b6e714b818af58b26c06e076719859dd7648514f",
+        "signature": "d0c0df73d616f061b0ad9438b6e714b818af58b26c06e076719859dd7648514f",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/apollo-server-env/dist/url.d.ts": {
+        "version": "1405854caa9cf70783113872afb1072091331d1bcdc01dd541389170f2f4e291",
+        "signature": "1405854caa9cf70783113872afb1072091331d1bcdc01dd541389170f2f4e291",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/apollo-server-env/dist/typescript-utility-types.d.ts": {
+        "version": "1835fccd13a829c665e2fa4e09f5f6d114dd769ea7c8f974edb9dcc63449ac3a",
+        "signature": "1835fccd13a829c665e2fa4e09f5f6d114dd769ea7c8f974edb9dcc63449ac3a",
+        "affectsGlobalScope": false
+      },
+      "../../node_modules/apollo-server-env/dist/index.d.ts": {
+        "version": "60cf0d8fdeb387919902b4c310d3df7ebf170123fc00b889ad4d7385703686d2",
+        "signature": "60cf0d8fdeb387919902b4c310d3df7ebf170123fc00b889ad4d7385703686d2",
         "affectsGlobalScope": false
       },
       "../../node_modules/apollo-server-caching/dist/keyvaluecache.d.ts": {
@@ -1892,7 +2157,7 @@
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
-        "version": "395484e4a24e30cf937e823fa3ab66dd692cf2a7c036bf6ab95ed861641832fb",
+        "version": "55b36da2d310a92291cfab6209bf9bbeb92c84523b784dea29557d41455bbd58",
         "signature": "f667f6b1d66ba55f0dcd27f5ff050063fecfe289bad00e8c5d48344a775c1439",
         "affectsGlobalScope": false
       },
@@ -2616,6 +2881,211 @@
       "../../node_modules/graphql-extensions/dist/index.d.ts": [
         "../../node_modules/apollo-server-env/dist/index.d.ts",
         "../../node_modules/apollo-server-types/dist/index.d.ts",
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/index.d.ts": [
+        "../../node_modules/graphql-scalars/mocks.d.ts",
+        "../../node_modules/graphql-scalars/regularexpression.d.ts",
+        "../../node_modules/graphql-scalars/scalars/index.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iso-date/duration.d.ts",
+        "../../node_modules/graphql-scalars/typedefs.d.ts",
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/regularexpression.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/bigint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/byte.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/currency.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/emailaddress.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/guid.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/hexadecimal.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/hexcolorcode.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/hsl.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/hsla.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/iban.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/index.d.ts": [
+        "../../node_modules/graphql-scalars/scalars/bigint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/byte.d.ts",
+        "../../node_modules/graphql-scalars/scalars/currency.d.ts",
+        "../../node_modules/graphql-scalars/scalars/emailaddress.d.ts",
+        "../../node_modules/graphql-scalars/scalars/guid.d.ts",
+        "../../node_modules/graphql-scalars/scalars/hexadecimal.d.ts",
+        "../../node_modules/graphql-scalars/scalars/hexcolorcode.d.ts",
+        "../../node_modules/graphql-scalars/scalars/hsl.d.ts",
+        "../../node_modules/graphql-scalars/scalars/hsla.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iban.d.ts",
+        "../../node_modules/graphql-scalars/scalars/ipv4.d.ts",
+        "../../node_modules/graphql-scalars/scalars/ipv6.d.ts",
+        "../../node_modules/graphql-scalars/scalars/isbn.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iso-date/date.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iso-date/datetime.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iso-date/duration.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iso-date/time.d.ts",
+        "../../node_modules/graphql-scalars/scalars/json/json.d.ts",
+        "../../node_modules/graphql-scalars/scalars/json/jsonobject.d.ts",
+        "../../node_modules/graphql-scalars/scalars/localdate.d.ts",
+        "../../node_modules/graphql-scalars/scalars/localendtime.d.ts",
+        "../../node_modules/graphql-scalars/scalars/localtime.d.ts",
+        "../../node_modules/graphql-scalars/scalars/long.d.ts",
+        "../../node_modules/graphql-scalars/scalars/mac.d.ts",
+        "../../node_modules/graphql-scalars/scalars/negativefloat.d.ts",
+        "../../node_modules/graphql-scalars/scalars/negativeint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/nonemptystring.d.ts",
+        "../../node_modules/graphql-scalars/scalars/nonnegativefloat.d.ts",
+        "../../node_modules/graphql-scalars/scalars/nonnegativeint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/nonpositivefloat.d.ts",
+        "../../node_modules/graphql-scalars/scalars/nonpositiveint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/objectid.d.ts",
+        "../../node_modules/graphql-scalars/scalars/phonenumber.d.ts",
+        "../../node_modules/graphql-scalars/scalars/port.d.ts",
+        "../../node_modules/graphql-scalars/scalars/positivefloat.d.ts",
+        "../../node_modules/graphql-scalars/scalars/positiveint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/postalcode.d.ts",
+        "../../node_modules/graphql-scalars/scalars/rgb.d.ts",
+        "../../node_modules/graphql-scalars/scalars/rgba.d.ts",
+        "../../node_modules/graphql-scalars/scalars/safeint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/timestamp.d.ts",
+        "../../node_modules/graphql-scalars/scalars/unsignedfloat.d.ts",
+        "../../node_modules/graphql-scalars/scalars/unsignedint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/url.d.ts",
+        "../../node_modules/graphql-scalars/scalars/uscurrency.d.ts",
+        "../../node_modules/graphql-scalars/scalars/utcoffset.d.ts",
+        "../../node_modules/graphql-scalars/scalars/uuid.d.ts",
+        "../../node_modules/graphql-scalars/scalars/void.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/ipv4.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/ipv6.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/isbn.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/iso-date/date.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/iso-date/datetime.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/iso-date/duration.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/iso-date/time.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/json/json.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/json/jsonobject.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/localdate.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/localendtime.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/localtime.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/long.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/mac.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/negativefloat.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/negativeint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/nonemptystring.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/nonnegativefloat.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/nonnegativeint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/nonpositivefloat.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/nonpositiveint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/objectid.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/phonenumber.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/port.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/positivefloat.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/positiveint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/postalcode.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/rgb.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/rgba.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/safeint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/timestamp.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/unsignedfloat.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/unsignedint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/url.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/uscurrency.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/utcoffset.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/uuid.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/void.d.ts": [
         "../../node_modules/graphql/index.d.ts"
       ],
       "../../node_modules/graphql-subscriptions/dist/index.d.ts": [
@@ -3380,7 +3850,9 @@
       "./src/index.ts": [
         "../../node_modules/apollo-server/dist/index.d.ts",
         "../../node_modules/fast-check/lib/types/fast-check.d.ts",
+        "../../node_modules/graphql-scalars/index.d.ts",
         "../../node_modules/graphql/index.d.ts",
+        "../../node_modules/graphql/type/definition.d.ts",
         "../../node_modules/pure-rand/lib/types/pure-rand.d.ts",
         "../core/lib/index.d.ts",
         "../fast-check/lib/index.d.ts",
@@ -3467,31 +3939,25 @@
         "../../node_modules/@apollographql/apollo-tools/lib/utilities/predicates.d.ts"
       ],
       "../../node_modules/@types/accepts/index.d.ts": [
-        "../../node_modules/@types/node/http.d.ts",
         "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/@types/body-parser/index.d.ts": [
         "../../node_modules/@types/connect/index.d.ts",
-        "../../node_modules/@types/node/http.d.ts",
         "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/@types/connect/index.d.ts": [
-        "../../node_modules/@types/node/http.d.ts",
         "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/@types/cookies/index.d.ts": [
         "../../node_modules/@types/connect/index.d.ts",
         "../../node_modules/@types/express/index.d.ts",
         "../../node_modules/@types/keygrip/index.d.ts",
-        "../../node_modules/@types/node/http.d.ts",
         "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/@types/cors/index.d.ts": [
         "../../node_modules/@types/express/index.d.ts"
       ],
       "../../node_modules/@types/express-serve-static-core/index.d.ts": [
-        "../../node_modules/@types/node/events.d.ts",
-        "../../node_modules/@types/node/http.d.ts",
         "../../node_modules/@types/node/index.d.ts",
         "../../node_modules/@types/qs/index.d.ts",
         "../../node_modules/@types/range-parser/index.d.ts"
@@ -3503,14 +3969,13 @@
         "../../node_modules/@types/serve-static/index.d.ts"
       ],
       "../../node_modules/@types/fs-capacitor/index.d.ts": [
-        "../../node_modules/@types/node/fs.d.ts",
         "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/@types/graphql-upload/index.d.ts": [
         "../../node_modules/@types/express/index.d.ts",
         "../../node_modules/@types/fs-capacitor/index.d.ts",
         "../../node_modules/@types/koa/index.d.ts",
-        "../../node_modules/@types/node/http.d.ts",
+        "../../node_modules/@types/node/index.d.ts",
         "../../node_modules/graphql/index.d.ts"
       ],
       "../../node_modules/@types/koa-compose/index.d.ts": [
@@ -3524,24 +3989,15 @@
         "../../node_modules/@types/http-errors/index.d.ts",
         "../../node_modules/@types/keygrip/index.d.ts",
         "../../node_modules/@types/koa-compose/index.d.ts",
-        "../../node_modules/@types/node/events.d.ts",
-        "../../node_modules/@types/node/http.d.ts",
-        "../../node_modules/@types/node/http2.d.ts",
-        "../../node_modules/@types/node/index.d.ts",
-        "../../node_modules/@types/node/net.d.ts",
-        "../../node_modules/@types/node/url.d.ts"
+        "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/@types/node-fetch/index.d.ts": [
         "../../node_modules/@types/node-fetch/externals.d.ts",
         "../../node_modules/@types/node-fetch/node_modules/form-data/index.d.ts",
-        "../../node_modules/@types/node/http.d.ts",
-        "../../node_modules/@types/node/index.d.ts",
-        "../../node_modules/@types/node/url.d.ts"
+        "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/@types/node-fetch/node_modules/form-data/index.d.ts": [
-        "../../node_modules/@types/node/http.d.ts",
-        "../../node_modules/@types/node/index.d.ts",
-        "../../node_modules/@types/node/stream.d.ts"
+        "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/@types/node/index.d.ts": [
         "../../node_modules/@types/node/index.d.ts",
@@ -3552,19 +4008,10 @@
       ],
       "../../node_modules/@types/serve-static/index.d.ts": [
         "../../node_modules/@types/mime/index.d.ts",
-        "../../node_modules/@types/node/http.d.ts",
         "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/@types/ws/index.d.ts": [
-        "../../node_modules/@types/node/events.d.ts",
-        "../../node_modules/@types/node/http.d.ts",
-        "../../node_modules/@types/node/https.d.ts",
-        "../../node_modules/@types/node/index.d.ts",
-        "../../node_modules/@types/node/net.d.ts",
-        "../../node_modules/@types/node/stream.d.ts",
-        "../../node_modules/@types/node/tls.d.ts",
-        "../../node_modules/@types/node/url.d.ts",
-        "../../node_modules/@types/node/zlib.d.ts"
+        "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/apollo-cache-control/dist/index.d.ts": [
         "../../node_modules/@apollographql/apollo-tools/lib/schema/resolveobject.d.ts",
@@ -3578,8 +4025,6 @@
       ],
       "../../node_modules/apollo-env/lib/fetch/fetch.d.ts": [
         "../../node_modules/@types/node-fetch/index.d.ts",
-        "../../node_modules/@types/node/http.d.ts",
-        "../../node_modules/@types/node/https.d.ts",
         "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/apollo-env/lib/fetch/index.d.ts": [
@@ -3587,8 +4032,7 @@
         "../../node_modules/apollo-env/lib/fetch/url.d.ts"
       ],
       "../../node_modules/apollo-env/lib/fetch/url.d.ts": [
-        "../../node_modules/@types/node/index.d.ts",
-        "../../node_modules/@types/node/url.d.ts"
+        "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/apollo-env/lib/index.d.ts": [
         "../../node_modules/apollo-env/lib/fetch/index.d.ts",
@@ -3601,7 +4045,7 @@
         "../../node_modules/apollo-env/lib/polyfills/object.d.ts"
       ],
       "../../node_modules/apollo-env/lib/utils/createhash.d.ts": [
-        "../../node_modules/@types/node/crypto.d.ts"
+        "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/apollo-env/lib/utils/index.d.ts": [
         "../../node_modules/apollo-env/lib/utils/createhash.d.ts",
@@ -3649,9 +4093,6 @@
         "../../node_modules/apollo-server-caching/dist/keyvaluecache.d.ts"
       ],
       "../../node_modules/apollo-server-core/dist/apolloserver.d.ts": [
-        "../../node_modules/@types/node/http.d.ts",
-        "../../node_modules/@types/node/http2.d.ts",
-        "../../node_modules/@types/node/https.d.ts",
         "../../node_modules/@types/node/index.d.ts",
         "../../node_modules/@types/ws/index.d.ts",
         "../../node_modules/apollo-server-core/dist/graphqloptions.d.ts",
@@ -3687,7 +4128,6 @@
         "../../node_modules/graphql/index.d.ts"
       ],
       "../../node_modules/apollo-server-core/dist/nodehttptorequest.d.ts": [
-        "../../node_modules/@types/node/http.d.ts",
         "../../node_modules/@types/node/index.d.ts",
         "../../node_modules/apollo-server-env/dist/index.d.ts"
       ],
@@ -3771,8 +4211,7 @@
         "../../node_modules/subscriptions-transport-ws/dist/index.d.ts"
       ],
       "../../node_modules/apollo-server-env/dist/fetch.d.ts": [
-        "../../node_modules/@types/node/http.d.ts",
-        "../../node_modules/@types/node/https.d.ts"
+        "../../node_modules/@types/node/index.d.ts"
       ],
       "../../node_modules/apollo-server-env/dist/index.d.ts": [
         "../../node_modules/apollo-server-env/dist/fetch.d.ts",
@@ -3820,7 +4259,6 @@
       ],
       "../../node_modules/apollo-server/dist/index.d.ts": [
         "../../node_modules/@types/express/index.d.ts",
-        "../../node_modules/@types/node/http.d.ts",
         "../../node_modules/@types/node/index.d.ts",
         "../../node_modules/apollo-server-express/dist/index.d.ts",
         "../../node_modules/apollo-server/dist/exports.d.ts"
@@ -4160,13 +4598,217 @@
         "../../node_modules/apollo-server-types/dist/index.d.ts",
         "../../node_modules/graphql/index.d.ts"
       ],
+      "../../node_modules/graphql-scalars/index.d.ts": [
+        "../../node_modules/graphql-scalars/mocks.d.ts",
+        "../../node_modules/graphql-scalars/regularexpression.d.ts",
+        "../../node_modules/graphql-scalars/scalars/index.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iso-date/duration.d.ts",
+        "../../node_modules/graphql-scalars/typedefs.d.ts",
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/regularexpression.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/bigint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/byte.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/currency.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/emailaddress.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/guid.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/hexadecimal.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/hexcolorcode.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/hsl.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/hsla.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/iban.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/index.d.ts": [
+        "../../node_modules/graphql-scalars/scalars/bigint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/byte.d.ts",
+        "../../node_modules/graphql-scalars/scalars/currency.d.ts",
+        "../../node_modules/graphql-scalars/scalars/emailaddress.d.ts",
+        "../../node_modules/graphql-scalars/scalars/guid.d.ts",
+        "../../node_modules/graphql-scalars/scalars/hexadecimal.d.ts",
+        "../../node_modules/graphql-scalars/scalars/hexcolorcode.d.ts",
+        "../../node_modules/graphql-scalars/scalars/hsl.d.ts",
+        "../../node_modules/graphql-scalars/scalars/hsla.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iban.d.ts",
+        "../../node_modules/graphql-scalars/scalars/ipv4.d.ts",
+        "../../node_modules/graphql-scalars/scalars/ipv6.d.ts",
+        "../../node_modules/graphql-scalars/scalars/isbn.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iso-date/date.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iso-date/datetime.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iso-date/duration.d.ts",
+        "../../node_modules/graphql-scalars/scalars/iso-date/time.d.ts",
+        "../../node_modules/graphql-scalars/scalars/json/json.d.ts",
+        "../../node_modules/graphql-scalars/scalars/json/jsonobject.d.ts",
+        "../../node_modules/graphql-scalars/scalars/localdate.d.ts",
+        "../../node_modules/graphql-scalars/scalars/localendtime.d.ts",
+        "../../node_modules/graphql-scalars/scalars/localtime.d.ts",
+        "../../node_modules/graphql-scalars/scalars/long.d.ts",
+        "../../node_modules/graphql-scalars/scalars/mac.d.ts",
+        "../../node_modules/graphql-scalars/scalars/negativefloat.d.ts",
+        "../../node_modules/graphql-scalars/scalars/negativeint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/nonemptystring.d.ts",
+        "../../node_modules/graphql-scalars/scalars/nonnegativefloat.d.ts",
+        "../../node_modules/graphql-scalars/scalars/nonnegativeint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/nonpositivefloat.d.ts",
+        "../../node_modules/graphql-scalars/scalars/nonpositiveint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/objectid.d.ts",
+        "../../node_modules/graphql-scalars/scalars/phonenumber.d.ts",
+        "../../node_modules/graphql-scalars/scalars/port.d.ts",
+        "../../node_modules/graphql-scalars/scalars/positivefloat.d.ts",
+        "../../node_modules/graphql-scalars/scalars/positiveint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/postalcode.d.ts",
+        "../../node_modules/graphql-scalars/scalars/rgb.d.ts",
+        "../../node_modules/graphql-scalars/scalars/rgba.d.ts",
+        "../../node_modules/graphql-scalars/scalars/safeint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/timestamp.d.ts",
+        "../../node_modules/graphql-scalars/scalars/unsignedfloat.d.ts",
+        "../../node_modules/graphql-scalars/scalars/unsignedint.d.ts",
+        "../../node_modules/graphql-scalars/scalars/url.d.ts",
+        "../../node_modules/graphql-scalars/scalars/uscurrency.d.ts",
+        "../../node_modules/graphql-scalars/scalars/utcoffset.d.ts",
+        "../../node_modules/graphql-scalars/scalars/uuid.d.ts",
+        "../../node_modules/graphql-scalars/scalars/void.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/ipv4.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/ipv6.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/isbn.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/iso-date/date.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/iso-date/datetime.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/iso-date/duration.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/iso-date/time.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/json/json.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/json/jsonobject.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/localdate.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/localendtime.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/localtime.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/long.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/mac.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/negativefloat.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/negativeint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/nonemptystring.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/nonnegativefloat.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/nonnegativeint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/nonpositivefloat.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/nonpositiveint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/objectid.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/phonenumber.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/port.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/positivefloat.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/positiveint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/postalcode.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/rgb.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/rgba.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/safeint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/timestamp.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/unsignedfloat.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/unsignedint.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/url.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/uscurrency.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/utcoffset.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/uuid.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
+      "../../node_modules/graphql-scalars/scalars/void.d.ts": [
+        "../../node_modules/graphql/index.d.ts"
+      ],
       "../../node_modules/graphql-subscriptions/dist/index.d.ts": [
         "../../node_modules/graphql-subscriptions/dist/pubsub-engine.d.ts",
         "../../node_modules/graphql-subscriptions/dist/pubsub.d.ts",
         "../../node_modules/graphql-subscriptions/dist/with-filter.d.ts"
       ],
       "../../node_modules/graphql-subscriptions/dist/pubsub.d.ts": [
-        "../../node_modules/@types/node/events.d.ts",
         "../../node_modules/@types/node/index.d.ts",
         "../../node_modules/graphql-subscriptions/dist/pubsub-engine.d.ts"
       ],
@@ -4898,7 +5540,6 @@
         "../../node_modules/subscriptions-transport-ws/dist/server.d.ts"
       ],
       "../../node_modules/subscriptions-transport-ws/dist/server.d.ts": [
-        "../../node_modules/@types/node/http.d.ts",
         "../../node_modules/@types/node/index.d.ts",
         "../../node_modules/@types/ws/index.d.ts",
         "../../node_modules/graphql/index.d.ts"
@@ -4915,7 +5556,11 @@
         "../core/lib/utils.d.ts"
       ],
       "../core/lib/types.d.ts": [
-        "../core/lib/index.d.ts"
+        "../core/lib/index.d.ts",
+        "../fast-check/lib/inputs.d.ts",
+        "../fast-check/lib/interpreter.d.ts",
+        "../graphql/lib/inputs.d.ts",
+        "../graphql/lib/interpreter.d.ts"
       ],
       "../fast-check/lib/index.d.ts": [
         "../fast-check/lib/inputs.d.ts",
@@ -5150,6 +5795,59 @@
       "../../node_modules/fast-check/lib/types/utils/hash.d.ts",
       "../../node_modules/fast-check/lib/types/utils/stringify.d.ts",
       "../../node_modules/graphql-extensions/dist/index.d.ts",
+      "../../node_modules/graphql-scalars/index.d.ts",
+      "../../node_modules/graphql-scalars/mocks.d.ts",
+      "../../node_modules/graphql-scalars/regularexpression.d.ts",
+      "../../node_modules/graphql-scalars/scalars/bigint.d.ts",
+      "../../node_modules/graphql-scalars/scalars/byte.d.ts",
+      "../../node_modules/graphql-scalars/scalars/currency.d.ts",
+      "../../node_modules/graphql-scalars/scalars/emailaddress.d.ts",
+      "../../node_modules/graphql-scalars/scalars/guid.d.ts",
+      "../../node_modules/graphql-scalars/scalars/hexadecimal.d.ts",
+      "../../node_modules/graphql-scalars/scalars/hexcolorcode.d.ts",
+      "../../node_modules/graphql-scalars/scalars/hsl.d.ts",
+      "../../node_modules/graphql-scalars/scalars/hsla.d.ts",
+      "../../node_modules/graphql-scalars/scalars/iban.d.ts",
+      "../../node_modules/graphql-scalars/scalars/index.d.ts",
+      "../../node_modules/graphql-scalars/scalars/ipv4.d.ts",
+      "../../node_modules/graphql-scalars/scalars/ipv6.d.ts",
+      "../../node_modules/graphql-scalars/scalars/isbn.d.ts",
+      "../../node_modules/graphql-scalars/scalars/iso-date/date.d.ts",
+      "../../node_modules/graphql-scalars/scalars/iso-date/datetime.d.ts",
+      "../../node_modules/graphql-scalars/scalars/iso-date/duration.d.ts",
+      "../../node_modules/graphql-scalars/scalars/iso-date/time.d.ts",
+      "../../node_modules/graphql-scalars/scalars/json/json.d.ts",
+      "../../node_modules/graphql-scalars/scalars/json/jsonobject.d.ts",
+      "../../node_modules/graphql-scalars/scalars/localdate.d.ts",
+      "../../node_modules/graphql-scalars/scalars/localendtime.d.ts",
+      "../../node_modules/graphql-scalars/scalars/localtime.d.ts",
+      "../../node_modules/graphql-scalars/scalars/long.d.ts",
+      "../../node_modules/graphql-scalars/scalars/mac.d.ts",
+      "../../node_modules/graphql-scalars/scalars/negativefloat.d.ts",
+      "../../node_modules/graphql-scalars/scalars/negativeint.d.ts",
+      "../../node_modules/graphql-scalars/scalars/nonemptystring.d.ts",
+      "../../node_modules/graphql-scalars/scalars/nonnegativefloat.d.ts",
+      "../../node_modules/graphql-scalars/scalars/nonnegativeint.d.ts",
+      "../../node_modules/graphql-scalars/scalars/nonpositivefloat.d.ts",
+      "../../node_modules/graphql-scalars/scalars/nonpositiveint.d.ts",
+      "../../node_modules/graphql-scalars/scalars/objectid.d.ts",
+      "../../node_modules/graphql-scalars/scalars/phonenumber.d.ts",
+      "../../node_modules/graphql-scalars/scalars/port.d.ts",
+      "../../node_modules/graphql-scalars/scalars/positivefloat.d.ts",
+      "../../node_modules/graphql-scalars/scalars/positiveint.d.ts",
+      "../../node_modules/graphql-scalars/scalars/postalcode.d.ts",
+      "../../node_modules/graphql-scalars/scalars/rgb.d.ts",
+      "../../node_modules/graphql-scalars/scalars/rgba.d.ts",
+      "../../node_modules/graphql-scalars/scalars/safeint.d.ts",
+      "../../node_modules/graphql-scalars/scalars/timestamp.d.ts",
+      "../../node_modules/graphql-scalars/scalars/unsignedfloat.d.ts",
+      "../../node_modules/graphql-scalars/scalars/unsignedint.d.ts",
+      "../../node_modules/graphql-scalars/scalars/url.d.ts",
+      "../../node_modules/graphql-scalars/scalars/uscurrency.d.ts",
+      "../../node_modules/graphql-scalars/scalars/utcoffset.d.ts",
+      "../../node_modules/graphql-scalars/scalars/uuid.d.ts",
+      "../../node_modules/graphql-scalars/scalars/void.d.ts",
+      "../../node_modules/graphql-scalars/typedefs.d.ts",
       "../../node_modules/graphql-subscriptions/dist/index.d.ts",
       "../../node_modules/graphql-subscriptions/dist/pubsub-engine.d.ts",
       "../../node_modules/graphql-subscriptions/dist/pubsub.d.ts",

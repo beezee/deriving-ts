@@ -167,8 +167,8 @@
         "affectsGlobalScope": false
       },
       "./src/interpreter.ts": {
-        "version": "a75908169e21633148d06216f6ccd99bbb66afb8e95f3975db4cd3ee0e0d632a",
-        "signature": "cd90d07d2b03d97746f9ec5b5302bd9e4e550e570e7c3d0fbd8e041757da9688",
+        "version": "ad74a9794b6fb3dd9ea4ce7de17ecef63f309ba4dcdefddb7efb7f4838b369ba",
+        "signature": "fe4997d5f723503fe3ffab7b086874e8f2da079fc7b9538d7fdd217f1111cfb1",
         "affectsGlobalScope": false
       },
       "../../node_modules/graphql/version.d.ts": {

@@ -78,9 +78,9 @@ type GQLAlg = lib.Alg<URI,
 
 export const GQL: () => GQLAlg & {
   definitions: () => ast.TypeDefinitionNode[],
-  scalars: () => def.GraphQLScalarType[]} = () => {
+  scalars: () => {[key: string]: def.GraphQLScalarType}} = () => {
   let definitions: {[key: string]: ast.TypeDefinitionNode} = {}
-  let scalars: def.GraphQLScalarType[] = []
+  let scalars: {[key: string]: def.GraphQLScalarType} = {}
   const _cache: {[key: string]: ast.TypeNode} = {}
   const memNamed = lib.memo(_cache)
   const input = <T>({GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>) => {
@@ -93,7 +93,7 @@ export const GQL: () => GQLAlg & {
   }
   return {
     definitions: () => Object.keys(definitions).map(k => definitions[k]),
-    scalars: () => scalars.slice(),
+    scalars: () => ({...scalars}),
     str: (i) => gqlPrim(i.GraphQL?.type || 'String'),
     bool: () => gqlPrim('Boolean'),
     num: (i) => gqlPrim(i.GraphQL?.type || "Int"),
@@ -101,7 +101,7 @@ export const GQL: () => GQLAlg & {
     array: ({of}) => list(of),
     recurse: (id, f, map = (x) => x) => map(memNamed(id, f)),
     gqlScalar: ({config: i}) => memNamed(i.name, () => {
-      scalars.push(new GraphQLScalarType(i))
+      scalars[i.name] = new GraphQLScalarType(i)
       definitions[i.name] = gqlScalar(i.name)
       return gqlPrim(i.name)
     }),
