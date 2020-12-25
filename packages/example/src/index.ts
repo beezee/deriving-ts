@@ -49,13 +49,9 @@ const query: Query = { books: (_: unknown, args: {count: number | string}) => {
   return Promise.resolve(books.value) 
 }}
 
-const Gql = gqld.GQL()
+const schema = gqld.BuildSchema({query: gqld.resolversFor(Query, query)})
 
-Query(Gql)
-const typeDefs = {kind: "Document" as const, definitions: Gql.definitions()}
-
-const server = new ApolloServer({ typeDefs, resolvers: {Query: query, ...Gql.scalars()},
-  cacheControl: false })
+const server = new ApolloServer({...schema, cacheControl: false })
 
 server.listen().then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);

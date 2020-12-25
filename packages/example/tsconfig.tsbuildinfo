@@ -162,8 +162,8 @@
         "affectsGlobalScope": false
       },
       "../graphql/lib/interpreter.d.ts": {
-        "version": "fe4997d5f723503fe3ffab7b086874e8f2da079fc7b9538d7fdd217f1111cfb1",
-        "signature": "fe4997d5f723503fe3ffab7b086874e8f2da079fc7b9538d7fdd217f1111cfb1",
+        "version": "fade8fac9445857e20be2d6ba52c22dbd1e78a31a39b77b1e63b00034df61f72",
+        "signature": "fade8fac9445857e20be2d6ba52c22dbd1e78a31a39b77b1e63b00034df61f72",
         "affectsGlobalScope": false
       },
       "../graphql/lib/index.d.ts": {
@@ -2157,7 +2157,7 @@
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
-        "version": "55b36da2d310a92291cfab6209bf9bbeb92c84523b784dea29557d41455bbd58",
+        "version": "77fbf00350268b94de0c5f22ac02f6b0f71b0abbb4647a3ebb94e3b4847cb553",
         "signature": "f667f6b1d66ba55f0dcd27f5ff050063fecfe289bad00e8c5d48344a775c1439",
         "affectsGlobalScope": false
       },

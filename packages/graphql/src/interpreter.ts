@@ -92,7 +92,8 @@ export const GQL: () => GQLAlg & {
     return ret
   }
   return {
-    definitions: () => Object.keys(definitions).map(k => definitions[k]),
+    definitions: () => Object.keys(definitions)
+      .filter(k => k !== "Context").map(k => definitions[k]),
     scalars: () => ({...scalars}),
     str: (i) => gqlPrim(i.GraphQL?.type || 'String'),
     bool: () => gqlPrim('Boolean'),
@@ -117,3 +118,22 @@ export const GQL: () => GQLAlg & {
   }
 };
 
+type GQLProg<A> = (alg: GQLAlg) => lib.Result<URI, A>
+type GQLResolve<A> = {tpe: GQLProg<A>, resolve: A}
+
+export const resolversFor = <A>(tpe: GQLProg<A>, resolve: A) => ({tpe, resolve})
+
+type SchemaInput<Q, M> = {query: GQLResolve<Q>, mutation?: GQLResolve<M>}
+
+// TODO - this return type is subpar
+export const BuildSchema = <Q, M>(schema: SchemaInput<Q, M>):
+{typeDefs: ast.DocumentNode, resolvers: {Query: Q} } => {
+  const interp = GQL()
+  if (schema.query) schema.query.tpe(interp)
+  if (schema.mutation) schema.mutation.tpe(interp)
+  const typeDefs = {kind: "Document" as const, definitions: interp.definitions()}
+  return ({typeDefs, resolvers: {
+      Query: schema.query.resolve,
+      ...(schema.mutation ? {Mutation: schema.mutation.resolve} : {}),
+      ...interp.scalars() }})
+}
