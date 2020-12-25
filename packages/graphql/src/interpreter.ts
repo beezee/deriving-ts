@@ -10,7 +10,7 @@ type GQL = {
 
 declare module "@deriving-ts/core" {
   export interface Targets<A> {
-    GraphQL: ast.TypeNode | ast.TypeDefinitionNode
+    GraphQL: ast.TypeNode & {arg?: ast.TypeNode}
   }
   interface _Alg<T extends Target, I extends Input> {
     gqlResolver: <Parent, Args, Context, Output>(i: lib.InputOf<"gqlResolver", I, Output> & {
@@ -30,14 +30,14 @@ const gqlPrim = (tpe: string): ast.NonNullTypeNode =>
   ({"kind": "NonNullType",
     "type": {"kind": "NamedType", "name": {"kind": "Name", "value": tpe,}}})
 
-const option = (node: ast.TypeNode | ast.TypeDefinitionNode) =>
+const option = (node: ast.TypeNode) =>
   node.kind === "NonNullType" ? node.type : node
 
 function isTypeNode(x: ast.TypeNode | ast.TypeDefinitionNode): x is ast.TypeNode {
   return "kind" in x && (["NamedType", "ListType", "NonNullType"].indexOf(x.kind) >= 0)
 }
 
-const list = (node: ast.TypeNode | ast.TypeDefinitionNode): ast.TypeNode | ast.TypeDefinitionNode =>
+const list = (node: ast.TypeNode): ast.TypeNode =>
   isTypeNode(node)
     ? ({kind: "NonNullType", type: {kind: "ListType", type: node}})
     : node
@@ -47,18 +47,29 @@ const object = (name: string, fields: ast.FieldDefinitionNode[]): ast.ObjectType
     name: {kind: "Name", value: name},
     fields})
 
-const arg = (node: ast.TypeDefinitionNode) =>
+const inputObject = (name: string, fields: ast.InputValueDefinitionNode[]):
+ast.InputObjectTypeDefinitionNode =>
+  ({kind: "InputObjectTypeDefinition",
+    name: {kind: "Name", value: name},
+    fields})
+
+const arg = (node: ast.TypeNode) =>
   ({kind: "InputValueDefinition" as const,
     name: {kind: "Name" as const, value: "input"},
-    type: gqlPrim(node.name.value)})
+    type: node})
 
-const field = (name: string, node: ast.TypeNode | ast.TypeDefinitionNode):
+const field = (name: string, node: ast.TypeNode & {arg?: ast.TypeNode}):
 ast.FieldDefinitionNode =>
   ({kind: "FieldDefinition",
     name: {kind: "Name", value: name},
-    arguments: ((<any>node).arg ? [arg((<any>node).arg)] : []),
-    type: isTypeNode(node)
-      ? node : gqlPrim(node.name.value)})
+    arguments: node.arg ? [arg(node.arg)] : [],
+    type: node})
+
+const inputField = (name: string, node: ast.TypeNode):
+ast.InputValueDefinitionNode =>
+  ({kind: "InputValueDefinition",
+    name: {kind: "Name", value: name},
+    type: node})
 
 type GQLAlg = lib.Alg<URI,
   "str" | "num" | "nullable" | "array" | "bool" |
@@ -68,39 +79,41 @@ type GQLAlg = lib.Alg<URI,
 export const GQL: () => GQLAlg & {
   definitions: () => ast.TypeDefinitionNode[],
   scalars: () => def.GraphQLScalarType[]} = () => {
-  let definitions: ast.TypeDefinitionNode[] = []
+  let definitions: {[key: string]: ast.TypeDefinitionNode} = {}
   let scalars: def.GraphQLScalarType[] = []
-  const _cache: Record<string, ast.TypeDefinitionNode> = {}
-  const cache = lib.memo(_cache)
-  const mem = (id: string, fn: () => ast.TypeNode | ast.TypeDefinitionNode):
-  ast.TypeNode | ast.TypeDefinitionNode => cache(id, fn)
-  const dict = <T>({GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>) => {
+  const _cache: {[key: string]: ast.TypeNode} = {}
+  const memNamed = lib.memo(_cache)
+  const input = <T>({GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>) => {
     if (Named in _cache) return _cache[Named]
-    mem(Named, () => gqlPrim(Named))
+    const ret = memNamed(Named, () => gqlPrim(Named))
     const props = mkProps()
-    const res = object(Named, Object.keys(props)
-      .map(k => field(k, props[k as keyof lib.Props<URI, T>] as ast.TypeNode)))
-    definitions.push(res)
-    return res
+    definitions[Named] = inputObject(Named, Object.keys(props)
+      .map(k => inputField(k, props[k as keyof lib.Props<URI, T>])))
+    return ret
   }
   return {
-    definitions: () => definitions.slice(),
+    definitions: () => Object.keys(definitions).map(k => definitions[k]),
     scalars: () => scalars.slice(),
     str: (i) => gqlPrim(i.GraphQL?.type || 'String'),
     bool: () => gqlPrim('Boolean'),
     num: (i) => gqlPrim(i.GraphQL?.type || "Int"),
     nullable: ({of}) => option(of),
     array: ({of}) => list(of),
-    recurse: (id, f, map = (x) => x) => map(mem(id, f)),
-    gqlScalar: ({config: i}) => {
-      if (i.name in _cache) return _cache[i.name]
-      mem(i.name, () => gqlPrim(i.name))
+    recurse: (id, f, map = (x) => x) => map(memNamed(id, f)),
+    gqlScalar: ({config: i}) => memNamed(i.name, () => {
       scalars.push(new GraphQLScalarType(i))
-      definitions.push(gqlScalar(i.name))
-      return _cache[i.name]
-    },
-    gqlResolver: ({parent: p, args: a, context: c, output:o}) => ({...o, arg: dict(a)}),
-    dict
+      definitions[i.name] = gqlScalar(i.name)
+      return gqlPrim(i.name)
+    }),
+    gqlResolver: ({parent: p, args: a, context: c, output: o}) => ({...o, arg: input(a)}),
+    dict: <T>({GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>) => {
+      if (Named in _cache) return _cache[Named]
+      const ret = memNamed(Named, () => gqlPrim(Named))
+      const props = mkProps()
+      definitions[Named] = object(Named, Object.keys(props)
+        .map(k => field(k, props[k as keyof lib.Props<URI, T>])))
+      return ret
+    }
   }
 };
 

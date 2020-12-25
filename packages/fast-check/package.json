@@ -1,8 +1,8 @@
 {
   "name": "@deriving-ts/fast-check",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
-  "main": "lib/main.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "ava"
   },

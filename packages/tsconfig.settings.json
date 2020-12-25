@@ -9,6 +9,9 @@
     "composite": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "paths": {
+      "@deriving-ts/*": ["./*/src"]
+    }
   },
   "exclude": ["node_modules"]
 }

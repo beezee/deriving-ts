@@ -3,6 +3,7 @@
     "references": [
         { "path": "core" },
         { "path": "graphql" },
-        { "path": "fast-check" }
+        { "path": "fast-check" },
+        { "path": "example" }
     ]
 }

@@ -1,18 +1,21 @@
 {
-  "name": "@deriving-ts/graphql",
+  "private": true,
+  "name": "@deriving-ts/example",
   "version": "0.0.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "start": "node lib/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@deriving-ts/core": "^0.0.0"
-  },
-  "peerDependencies": {
+    "@deriving-ts/core": "^0.0.0",
+    "@deriving-ts/fast-check": "^0.0.0",
+    "@deriving-ts/graphql": "^0.0.0",
+    "apollo-server": "^2.19.1",
     "graphql": "^15.4.0"
   },
   "devDependencies": {

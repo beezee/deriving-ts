@@ -52,7 +52,7 @@ const tnrResolver = <F extends lib.Target>(T: ResolverAlg<F>) =>
      time: T.nullable({of: SDate(T)}),
      count: T.gqlResolver({
       parent: thingNoRec(T), args: {
-        GraphQL: {Named: "ThingCountInput"}, props: () => ({foo: T.str({})})},
+        GraphQL: {Named: "ThingCountInput"}, props: () => ({thing: T.array({of: thing(T)})})},
       context: T.dict({GraphQL: {Named: 'TRArgs'}, props: () => ({})}),
       output: T.num({})})})})
 
@@ -60,15 +60,13 @@ const assertTrs = tnrResolver(lib.Type)
 type ThingResolvers = lib.TypeOf<typeof assertTrs>
 const takeThingResolvers = (x: ThingResolvers): void => assertTrs(x)
 takeThingResolvers({foo: "hi", bar: 3, time: new Date(),
-  count: (parent: ThingNoRec, args: {foo: string}, context: unknown) => Promise.resolve(2)})
+  count: (parent: ThingNoRec, args: {thing: Thing[]}, context: unknown) => Promise.resolve(2)})
 
 const schema = (x: any) =>
   buildASTSchema({kind: "Document", definitions: x})
 
 const Gql = gql.GQL()
 test("test", async t => {
-  thingNoRec(Gql)
-  thing(Gql)
   tnrResolver(Gql)
   console.log(printSchema(schema(Gql.definitions())))
   t.true(true)
