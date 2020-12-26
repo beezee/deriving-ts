@@ -167,8 +167,8 @@
         "affectsGlobalScope": false
       },
       "./src/interpreter.ts": {
-        "version": "4df0a32889a29d0d6278e1ea71b971fdbb4dde149fb2f66929182be2e13b7d47",
-        "signature": "fade8fac9445857e20be2d6ba52c22dbd1e78a31a39b77b1e63b00034df61f72",
+        "version": "0899089329481901eeac198cd21bc4bfeafbf88e48e8e70aa1c157dedee66e1b",
+        "signature": "c18e1f7fc7126a4480a588cf0caa5b469948ecf091912a0fd09f5a944728e2b3",
         "affectsGlobalScope": false
       },
       "../../node_modules/graphql/version.d.ts": {
@@ -617,7 +617,7 @@
         "affectsGlobalScope": false
       },
       "./src/index.spec.ts": {
-        "version": "b1284024cfa83b9e6f79edfb7e655ca78a62e71c4df36afcfc24a009128c206f",
+        "version": "36e6eaa3a84b3eeb691f3e856bf5276fb4095ac3aae6f960bb15469faad367e1",
         "signature": "e04d938303fe7fa3851a60d608014912163108a8045713ebbe0a6acac28bf40c",
         "affectsGlobalScope": false
       },

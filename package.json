@@ -4,7 +4,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "tsc -b packages/core packages/graphql packages/fast-check packages/example",
     "test": "lerna run test",
-    "clean": "rimraf packages/**/lib"
+    "clean": "find packages -name tsconfig.tsbuildinfo -delete && rimraf packages/**/lib"
   },
   "devDependencies": {
     "@types/node": "^8.0.28",

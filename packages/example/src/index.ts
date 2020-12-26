@@ -9,7 +9,7 @@ import { ApolloServer, gql } from 'apollo-server';
 import { buildASTSchema, printSchema } from 'graphql';
 
 
-type Ops = "dict" | "array" | "str"
+type Ops = "dict" | "array" | "str" | "bool" | "num"
 type Inputs = "GraphQL" | "FastCheck"
 type Alg<F extends lib.Target> = lib.Alg<F, Ops, Inputs>
 
@@ -24,32 +24,41 @@ type Book = lib.TypeOf<typeof BookType>
 
 const arbBooks: fc.Arbitrary<Book[]> = 
   fc.array(Book(fastcheck.FastCheck())(3), 2, 4)
-const books = arbBooks.generate(new fc.Random(prand.mersenne(1823823)))
+const books = (s: number): Book[] => arbBooks.generate(new fc.Random(prand.mersenne(s))).value
 
-type GqlAlg<F extends lib.Target> = lib.Alg<F, Ops | "gqlResolver" | "gqlScalar", Inputs>
+type GqlAlg<F extends lib.Target> = lib.Alg<F, 
+  Ops | "gqlResolver" | "gqlScalar" | "dictWithResolvers", Inputs>
+
+const Context = <F extends lib.Target>(T: GqlAlg<F>) =>
+  T.dict({GraphQL: {Named: "Context"}, props: () => ({foo: T.str({})})})
+
+const GqlBook = <F extends lib.Target>(T: GqlAlg<F>) =>
+  T.dictWithResolvers({GraphQL: {Named: "Book"}, props: () => bookProps(T)},
+    {resolvers: () => ({ 
+      titleLength: T.gqlResolver({
+        parent: Book(T),
+        args: {GraphQL: {Named: "BookAvailableInput"}, props: () => ({max: T.num({})})},
+        context: Context(T),
+        output: T.num({}),
+        resolve: ({title}, {input: {max}}) => Promise.resolve(Math.min(max, title.length))
+      })})})
 
 const PosInt = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.gqlScalar({config: (<def.GraphQLScalarTypeConfig<string | number, any>>SafeInt)})
+
 const queryProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
   books: T.gqlResolver({
     parent: T.dict({GraphQL: {Named: "Query"}, props: () => ({})}),
     context: T.dict({GraphQL: {Named: 'Context'}, props: () => ({foo: T.str({})})}),
-    args: {GraphQL: {Named: "BooksQueryInput"}, props: () => ({count: PosInt(T)})},
-    output: T.array({of: Book(T)})})
+    args: {GraphQL: {Named: "BooksQueryInput"}, props: () => ({seed: T.num({})})},
+    output: T.array({of: GqlBook(T)}),
+    resolve: (_, {input: {seed}}) => Promise.resolve(books(seed))})
 })
 
 const Query = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.dict({GraphQL: {Named: "Query"}, props: () => queryProps(T)})
-const QueryType = Query(lib.Type)
-type Query = lib.TypeOf<typeof QueryType>
 
-const query: Query = { books: (_: unknown, args: {count: number | string}) => {
-  console.log(JSON.stringify(args, null, 2))
-  console.log(books.value)
-  return Promise.resolve(books.value) 
-}}
-
-const schema = gqld.BuildSchema({query: gqld.resolversFor(Query, query)})
+const schema = gqld.BuildSchema({Query})
 
 const server = new ApolloServer({...schema, cacheControl: false })
 

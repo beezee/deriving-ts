@@ -62,11 +62,12 @@ fc.Memo<number> => fc.memo(_ => {
 })
 
 export type FCAlg = lib.Alg<URI, 
-  "str" | "num" | "nullable" | "array" | "recurse" | "dict",
+  "bool" | "str" | "num" | "nullable" | "array" | "recurse" | "dict",
   URI>
 
 export const FastCheck: () => FCAlg = () =>
   ({str, num, 
+    bool: () => fc.memo(n => fc.boolean()),
     nullable: ({of: x, FastCheck: input}) => 
       fc.memo(n => fc.option(x(n), input || {})),
     array: ({of: x, FastCheck: input}) => fc.memo(n => fc.array(x(n), input || {})),

@@ -547,8 +547,8 @@
         "affectsGlobalScope": false
       },
       "./src/interpreter.ts": {
-        "version": "e311cbfed08d59e78ab5e26fc823c6929bbf307560bdee3760e1bd6e1e22924a",
-        "signature": "27a1acd003b64718aaf6cf04cdee0c2ecebdcfbf3582e6046aeb9f149f1815e4",
+        "version": "8b6af4a6c036c7d607764509de5ca5fa4da756a1b7ff822efa78f9bf0f3bfaec",
+        "signature": "a809799e0352f9efb4592f44317661a959d84a43e7880ebe0be6f7b23036db32",
         "affectsGlobalScope": false
       },
       "./node_modules/ava/index.d.ts": {

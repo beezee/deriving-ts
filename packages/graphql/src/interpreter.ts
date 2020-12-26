@@ -10,15 +10,20 @@ type GQL = {
 
 declare module "@deriving-ts/core" {
   export interface Targets<A> {
-    GraphQL: ast.TypeNode & {arg?: ast.TypeNode}
+    GraphQL: ast.TypeNode & {arg?: ast.TypeNode, resolveFn?: (...a: any) => Promise<any>}
   }
   interface _Alg<T extends Target, I extends Input> {
     gqlResolver: <Parent, Args, Context, Output>(i: lib.InputOf<"gqlResolver", I, Output> & {
       parent: Result<T, Parent>, args: lib.DictArgs<T, I, Args>,
-      context: Result<T, Context>, output: Result<T, Output>}) =>
-      Result<T, (parent: Parent, args: Args, context: Context) => Promise<Output>>
+      context: Result<T, Context>, output: Result<T, Output>,
+      resolve: (parent: Parent, args: {input: Args}, context: Context) => Promise<Output>}) =>
+      Result<T, (parent: Parent, args: {input: Args}, context: Context) => Promise<Output>>
     gqlScalar: <A>(i: lib.InputOf<"gqlScalar", I, A> & {
       config: def.GraphQLScalarTypeConfig<A, any> }) => Result<T, A>
+    dictWithResolvers: <P, R>(
+      i: lib.DictArgs<T, I, P>,
+      r: {resolvers: () => lib.Props<T, R>}) =>
+      lib.Result<T, P>;
   }
 }
 
@@ -58,12 +63,12 @@ const arg = (node: ast.TypeNode) =>
     name: {kind: "Name" as const, value: "input"},
     type: node})
 
-const field = (name: string, node: ast.TypeNode & {arg?: ast.TypeNode}):
-ast.FieldDefinitionNode =>
-  ({kind: "FieldDefinition",
+const field = <A>(name: string, node: ast.TypeNode & {arg?: ast.TypeNode, resolveFn?: A}):
+[ast.FieldDefinitionNode, A | undefined] =>
+  [({kind: "FieldDefinition",
     name: {kind: "Name", value: name},
     arguments: node.arg ? [arg(node.arg)] : [],
-    type: node})
+    type: node}), node.resolveFn]
 
 const inputField = (name: string, node: ast.TypeNode):
 ast.InputValueDefinitionNode =>
@@ -73,28 +78,63 @@ ast.InputValueDefinitionNode =>
 
 type GQLAlg = lib.Alg<URI,
   "str" | "num" | "nullable" | "array" | "bool" |
-  "recurse" | "dict" | "gqlResolver" | "gqlScalar",
+  "recurse" | "dict" | "gqlResolver" | "gqlScalar" |
+  "dictWithResolvers",
   URI>
 
 export const GQL: () => GQLAlg & {
   definitions: () => ast.TypeDefinitionNode[],
-  scalars: () => {[key: string]: def.GraphQLScalarType}} = () => {
+  scalars: () => {[key: string]: def.GraphQLScalarType},
+  resolvers: () => {[key: string]: object}} = () => {
   let definitions: {[key: string]: ast.TypeDefinitionNode} = {}
+  const mergeDef = (key: string, node: ast.TypeDefinitionNode) => {
+    const def = definitions[key]
+    if (def && def.kind === "InputObjectTypeDefinition" && 
+        node.kind === "InputObjectTypeDefinition")
+      definitions[key] = {...def,
+        fields: [...(def.fields || []), ...(node.fields || [])]}
+    else if (def && def.kind === "ObjectTypeDefinition" &&
+             node.kind === "ObjectTypeDefinition")
+      definitions[key] = {...def,
+        fields: [...(def.fields || []), ...(node.fields || [])]}
+    else
+      definitions[key] = node
+  }
   let scalars: {[key: string]: def.GraphQLScalarType} = {}
   const _cache: {[key: string]: ast.TypeNode} = {}
   const memNamed = lib.memo(_cache)
+  const _resolveCache: {[key: string]: object} = {}
   const input = <T>({GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>) => {
     if (Named in _cache) return _cache[Named]
     const ret = memNamed(Named, () => gqlPrim(Named))
     const props = mkProps()
-    definitions[Named] = inputObject(Named, Object.keys(props)
-      .map(k => inputField(k, props[k as keyof lib.Props<URI, T>])))
+    mergeDef(Named, inputObject(Named, Object.keys(props)
+      .map(k => inputField(k, props[k as keyof lib.Props<URI, T>]))))
+    return ret
+  }
+  const parseProps = <P>(props: lib.Props<URI, P>):
+  [keyof P, ast.FieldDefinitionNode, ((...a: any) => Promise<any>) | undefined][] =>
+    Object.keys(props).map(k => {
+      const [fd, rs] = field(k, props[k as keyof lib.Props<URI, P>])
+      return [k as keyof P, fd, rs]
+    })
+  const dict = <T>({GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>) => {
+    if (Named in _cache) return _cache[Named]
+    const ret = memNamed(Named, () => gqlPrim(Named))
+    const props = parseProps(mkProps())
+    mergeDef(Named, object(Named, props.map(t => t[1])))
+    props.forEach(([k, _, r]) => {
+      if (r) _resolveCache[Named] = (Named in _resolveCache)
+        ? ({...(_resolveCache[Named]), [k]: r})
+        : {[k]: r}
+    })
     return ret
   }
   return {
     definitions: () => Object.keys(definitions)
       .filter(k => k !== "Context").map(k => definitions[k]),
     scalars: () => ({...scalars}),
+    resolvers: () => ({..._resolveCache}),
     str: (i) => gqlPrim(i.GraphQL?.type || 'String'),
     bool: () => gqlPrim('Boolean'),
     num: (i) => gqlPrim(i.GraphQL?.type || "Int"),
@@ -106,34 +146,34 @@ export const GQL: () => GQLAlg & {
       definitions[i.name] = gqlScalar(i.name)
       return gqlPrim(i.name)
     }),
-    gqlResolver: ({parent: p, args: a, context: c, output: o}) => ({...o, arg: input(a)}),
-    dict: <T>({GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>) => {
-      if (Named in _cache) return _cache[Named]
-      const ret = memNamed(Named, () => gqlPrim(Named))
-      const props = mkProps()
-      definitions[Named] = object(Named, Object.keys(props)
-        .map(k => field(k, props[k as keyof lib.Props<URI, T>])))
+    gqlResolver: ({parent: p, args: a, context: c, output: o, resolve: r}) =>
+      ({...o, arg: input(a), resolveFn: r}),
+    dict,
+    dictWithResolvers: <T, R>(
+      {GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>,
+      {resolvers}: {resolvers: () => lib.Props<URI, R>}) => {
+      const ret = dict({GraphQL: {Named}, props: mkProps})
+      const props = parseProps(resolvers())
+      mergeDef(Named, object(Named, props.map(t => t[1])))
+      props.forEach(([k, _, r]) => {
+        if (r) _resolveCache[Named] = (Named in _resolveCache)
+          ? ({...(_resolveCache[Named]), [k]: r})
+          : {[k]: r}
+      })
       return ret
     }
   }
 };
 
 type GQLProg<A> = (alg: GQLAlg) => lib.Result<URI, A>
-type GQLResolve<A> = {tpe: GQLProg<A>, resolve: A}
+type SchemaInput<Q, M> = {Query: GQLProg<Q>, Mutation?: GQLProg<M>}
 
-export const resolversFor = <A>(tpe: GQLProg<A>, resolve: A) => ({tpe, resolve})
-
-type SchemaInput<Q, M> = {query: GQLResolve<Q>, mutation?: GQLResolve<M>}
-
-// TODO - this return type is subpar
+// TODO - this return type is a disappointment
 export const BuildSchema = <Q, M>(schema: SchemaInput<Q, M>):
-{typeDefs: ast.DocumentNode, resolvers: {Query: Q} } => {
+{typeDefs: ast.DocumentNode, resolvers: any} => {
   const interp = GQL()
-  if (schema.query) schema.query.tpe(interp)
-  if (schema.mutation) schema.mutation.tpe(interp)
+  schema.Query(interp)
+  if (schema.Mutation) schema.Mutation(interp)
   const typeDefs = {kind: "Document" as const, definitions: interp.definitions()}
-  return ({typeDefs, resolvers: {
-      Query: schema.query.resolve,
-      ...(schema.mutation ? {Mutation: schema.mutation.resolve} : {}),
-      ...interp.scalars() }})
+  return ({typeDefs, resolvers: {...interp.scalars(), ...interp.resolvers()}})
 }
