@@ -21,10 +21,6 @@ const Book = <F extends lib.Target>(T: Alg<F>) =>
 const BookType = Book(lib.Type)
 type Book = lib.TypeOf<typeof BookType>
 
-const arbBooks: fc.Arbitrary<Book[]> = 
-  fc.array(Book(fastcheck.FastCheck())(3), 2, 4)
-const books = (s: number): Book[] => arbBooks.generate(new fc.Random(prand.mersenne(s))).value
-
 const videoProps = <F extends lib.Target>(T: Alg<F>) => {
   const {title, author: producer} = bookProps(T)
   return {title, producer}
@@ -35,10 +31,17 @@ const Video = <F extends lib.Target>(T: Alg<F>) =>
 const VideoType = Video(lib.Type)
 type Video = lib.TypeOf<typeof VideoType>
 
-const arbVideos: fc.Arbitrary<Video[]> =
-  fc.array(Video(fastcheck.FastCheck())(3), 3, 5)
-const videos = (s: number): Video[] => arbVideos.generate(new fc.Random(prand.mersenne(s))).value
+const Media = <F extends lib.Target>(T: Alg<F>) =>
+  T.sum({GraphQL: {Named: "Media"}, key: "type",
+    props: {Book: Book(T), Video: Video(T)}})
+const MediaType = Media(lib.Type)
+type Media = lib.TypeOf<typeof MediaType>
 
+const arbMedia: fc.Arbitrary<Media[]> =
+  fastcheck.FastCheck().array({
+    FastCheck: {minLength: 2, maxLength: 10},
+    of: Media(fastcheck.FastCheck())})(3)
+const media = (s: number): Media[] => arbMedia.generate(new fc.Random(prand.mersenne(s))).value
 
 type GqlAlg<F extends lib.Target> = lib.Alg<F, 
   Ops | "gqlResolver" | "gqlScalar" | "dictWithResolvers", Inputs>
@@ -57,7 +60,7 @@ const GqlBook = <F extends lib.Target>(T: GqlAlg<F>) =>
         resolve: ({title}, {input: {max}}) => Promise.resolve(Math.min(max, title.length))
       })})})
 
-const Media = <F extends lib.Target>(T: GqlAlg<F>) =>
+const GqlMedia = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.sum({GraphQL: {Named: "Media"}, key: "type",
     props: {Book: GqlBook(T), Video: Video(T)}})
 
@@ -69,10 +72,8 @@ const queryProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
     parent: T.dict({GraphQL: {Named: "Query"}, props: () => ({})}),
     context: Context(T),
     args: {GraphQL: {Named: "MediaQueryInput"}, props: () => ({seed: T.num({})})},
-    output: T.array({of: Media(T)}),
-    resolve: (_, {input: {seed}}) => Promise.resolve(
-      [...books(seed).map(x => ({...x, type: "Book" as const})),
-       ...videos(seed).map(x => ({...x, type: "Video" as const}))])}),
+    output: T.array({of: GqlMedia(T)}),
+    resolve: (_, {input: {seed}}) => Promise.resolve(media(seed))})
 })
 
 const Query = <F extends lib.Target>(T: GqlAlg<F>) =>
