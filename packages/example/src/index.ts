@@ -13,6 +13,7 @@ type Inputs = "GraphQL" | "FastCheck"
 type Alg<F extends lib.Target> = lib.Alg<F, Ops, Inputs>
 
 const bookProps = <F extends lib.Target>(T: Alg<F>) => ({
+  ID: T.str({FastCheck: {type: "uuid"}, GraphQL: {type: "ID"}}),
   title: T.str({FastCheck: {type: "lorem"}}),
   author: T.str({FastCheck: {type: "lorem"}}) })
 
@@ -22,8 +23,8 @@ const BookType = Book(lib.Type)
 type Book = lib.TypeOf<typeof BookType>
 
 const videoProps = <F extends lib.Target>(T: Alg<F>) => {
-  const {title, author: producer} = bookProps(T)
-  return {title, producer}
+  const {ID, title, author: producer} = bookProps(T)
+  return {ID, title, producer}
 }
 
 const Video = <F extends lib.Target>(T: Alg<F>) =>
