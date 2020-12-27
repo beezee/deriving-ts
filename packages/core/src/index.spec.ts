@@ -26,7 +26,9 @@ const t3Props = <F extends lib.Target>(T: Alg<F>) => ({
 });
 
 const adtMembers = <F extends lib.Target>(T: Alg<F>) =>
-  ({t1: t1Props(T), t2: t2Props(T), t3: t3Props(T)})
+  ({t1: T.dict({props: () => t1Props(T)}), 
+    t2: T.dict({props: () => t2Props(T)}),
+    t3: T.dict({props: () => t3Props(T)})})
 
 const adt = <F extends lib.Target>(T: Alg<F>) =>
   T.sumMembers({key: "type", props: adtMembers(T)})

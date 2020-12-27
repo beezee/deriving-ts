@@ -79,11 +79,11 @@ export const FastCheck: () => FCAlg = () => {
     recurse: (_, f, map, i) => fc.memo(n =>
       n <= 1 ? fc.constant(i.FastCheck.baseCase) : map(f())(n)),
     sum: <K extends string, A>(
-      i: {key: K, props: {[k in keyof A]: lib.Props<URI, A[k]>}}):
+      i: {key: K, props: {[k in keyof A]: lib.Result<URI, A[k]>}}):
       lib.Result<URI, {[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]> =>
         fc.memo(n => fc.oneof(...Object.keys(i.props).map(k =>
-          dict({props: () => i.props[k as keyof A]})(n).map(
-          d => ({...d, ...({[i.key as K]: k} as {[x in K]: keyof A})}))))),
+          i.props[k as keyof A](n).map(d => 
+            ({...d, ...({[i.key as K]: k} as {[x in K]: keyof A})}))))),
     dict
   })
 }

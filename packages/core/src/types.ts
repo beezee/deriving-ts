@@ -72,11 +72,11 @@ declare module './index' {
   interface _Alg<T extends Target, I extends Input> {
     sumMembers: <K extends string, A>(
       i: lib.InputOf<'sumMembers', I, {[k in keyof A]: A[k] & {[x in K]: k}}> & 
-      {key: K, props: {[k in keyof A]: Props<T, A[k]>}}) =>
+      {key: K, props: {[k in keyof A]: lib.Result<T, A[k]>}}) =>
         lib.Result<T, {[k in keyof A]: A[k] & {[x in K]: k}}>,
     sum: <K extends string, A>(
       i: lib.InputOf<'sum', I, {[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]> & 
-      {key: K, props: {[k in keyof A]: Props<T, A[k]>}}) =>
+      {key: K, props: {[k in keyof A]: lib.Result<T, A[k]>}}) =>
         lib.Result<T, {[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]>
   }
 }

@@ -57,21 +57,14 @@ const GqlBook = <F extends lib.Target>(T: GqlAlg<F>) =>
         resolve: ({title}, {input: {max}}) => Promise.resolve(Math.min(max, title.length))
       })})})
 
-// TODO - shape of sum means no dictWithResolvers, must manually ensure inclusion outside sum
 const Media = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.sum({GraphQL: {Named: "Media"}, key: "type",
-    props: {Book: bookProps(T), Video: videoProps(T)}})
+    props: {Book: GqlBook(T), Video: Video(T)}})
 
 const PosInt = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.gqlScalar({config: (<def.GraphQLScalarTypeConfig<string | number, any>>SafeInt)})
 
 const queryProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
-  books: T.gqlResolver({
-    parent: T.dict({GraphQL: {Named: "Query"}, props: () => ({})}),
-    context: T.dict({GraphQL: {Named: 'Context'}, props: () => ({foo: T.str({})})}),
-    args: {GraphQL: {Named: "BooksQueryInput"}, props: () => ({seed: T.num({})})},
-    output: T.array({of: GqlBook(T)}),
-    resolve: (_, {input: {seed}}) => Promise.resolve(books(seed))}),
   media: T.gqlResolver({
     parent: T.dict({GraphQL: {Named: "Query"}, props: () => ({})}),
     context: Context(T),

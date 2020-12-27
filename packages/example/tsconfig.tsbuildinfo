@@ -92,8 +92,8 @@
         "affectsGlobalScope": false
       },
       "../core/lib/types.d.ts": {
-        "version": "0f25fae4e43c5721d05eca396974cfb3c611c5e2b6261bf4b0f6ac5bbdbf09e9",
-        "signature": "0f25fae4e43c5721d05eca396974cfb3c611c5e2b6261bf4b0f6ac5bbdbf09e9",
+        "version": "fbd970c9161f9058fe2f8470b60daf9c01042f5fb919f46d499b48b864ff7918",
+        "signature": "fbd970c9161f9058fe2f8470b60daf9c01042f5fb919f46d499b48b864ff7918",
         "affectsGlobalScope": false
       },
       "../core/lib/utils.d.ts": {
@@ -2157,7 +2157,7 @@
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
-        "version": "61a14377b48bef891ddd9a124981a391f4ba84d527bea6341b948c83e3c23417",
+        "version": "3a51650c4b545a6fca2517c59b14b8ed33759c24f3f44d94a9f305c4832ecc9a",
         "signature": "f667f6b1d66ba55f0dcd27f5ff050063fecfe289bad00e8c5d48344a775c1439",
         "affectsGlobalScope": false
       },

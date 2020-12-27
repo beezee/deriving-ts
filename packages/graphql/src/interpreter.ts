@@ -158,10 +158,8 @@ export const GQL: () => GQLAlg & {
       ({...o, arg: input(a), resolveFn: r}),
     // TODO - support recursive types in a union
     sum: <K extends string, A>(
-      i: {GraphQL: {Named: string}, key: K, props: {[k in keyof A]: lib.Props<URI, A[k]>}}) => {
+      i: {GraphQL: {Named: string}, key: K, props: {[k in keyof A]: lib.Result<URI, A[k]>}}) => {
         const {GraphQL: {Named}} = i
-        Object.keys(i.props).forEach(k =>
-          dict({GraphQL: {Named: k}, props: () => i.props[k as keyof A]}))
         mergeDef(Named, union(Named, Object.keys(i.props).map(namedType)))
         _resolveCache[Named] = (Named in _resolveCache)
           ? {..._resolveCache[Named], 
