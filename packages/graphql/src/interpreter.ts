@@ -12,12 +12,14 @@ declare module "@deriving-ts/core" {
   export interface Targets<A> {
     GraphQL: ast.TypeNode & {arg?: ast.TypeNode, resolveFn?: (...a: any) => Promise<any>}
   }
+  type ArgsType<A> = A extends null ? unknown : A
   interface _Alg<T extends Target, I extends Input> {
     gqlResolver: <Parent, Args, Context, Output>(i: lib.InputOf<"gqlResolver", I, Output> & {
-      parent: Result<T, Parent>, args: lib.DictArgs<T, I, Args>,
+      parent: Result<T, Parent>, args: lib.DictArgs<T, I, Args> | null,
       context: (c: Context) => void, output: Result<T, Output>,
       resolve: (parent: Parent, args: {input: Args}, context: Context) => Promise<Output>}) =>
-      Result<T, (parent: Parent, args: {input: Args}, context: Context) => Promise<Output>>
+      Result<T, (parent: Parent, args: {input: ArgsType<Args>}, context: Context) =>
+        Promise<Output>>
     gqlScalar: <A>(i: lib.InputOf<"gqlScalar", I, A> & {
       config: def.GraphQLScalarTypeConfig<A, any> }) => Result<T, A>
     dictWithResolvers: <P, R>(
@@ -161,7 +163,7 @@ export const GQL: () => GQLAlg & {
       return gqlPrim(i.name)
     }),
     gqlResolver: ({parent: p, args: a, context: c, output: o, resolve: r}) =>
-      ({...o, arg: input(a), resolveFn: r}),
+      ({...o, ...(a ? {arg: input(a)} : {}), resolveFn: r}),
     // TODO - support recursive types in a union
     sum: <K extends string, A>(
       i: {GraphQL: {Named: string}, key: K, props: {[k in keyof A]: lib.Result<URI, A[k]>}}) => {

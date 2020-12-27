@@ -32,7 +32,7 @@ const UpdateBook = <F extends lib.Target>(T: Alg<F>) => {
   const {ID, ...rest} = bookProps(T)
   return {
     GraphQL: {Named: "UpdateBook"},
-    props: () => ({ID, seed: T.num({}), ...makeOptional(T, rest)})
+    props: () => ({ID, ...makeOptional(T, rest)})
   }
 }
 
@@ -50,7 +50,7 @@ const UpdateVideo = <F extends lib.Target>(T: Alg<F>) => {
   const {ID, ...rest} = videoProps(T)
   return {
     GraphQL: {Named: "UpdateVideo"},
-    props: () => ({ID, seed: T.num({}), ...makeOptional(T, rest)})
+    props: () => ({ID, ...makeOptional(T, rest)})
   }
 }
 
@@ -77,21 +77,23 @@ interface Repo<A> {
   all: () => A[]
   get: (id: string) => A | null
   save: (a: A) => void
+  seed: (a: A[]) => void
 }
-type Context = { books: (s: number) => Repo<Book>, videos: (s: number) => Repo<Video> }
+type Context = { books: Repo<Book>, videos: Repo<Video> }
 
 const books: {[key: string]: Book} = {}
 const videos: {[key: string]: Video} = {}
-const repo = <A extends {ID: string}>(
-  db: {[key: string]: A}, gen: (s: number) => A[]): ((s: number) => Repo<A>) => (s: number) => {
-  gen(s).forEach(e => { if (!(e.ID in db)) db[e.ID] = e })
-  return {
-    all: () => Object.keys(db).reduce((acc, e) => [...acc, db[e]], [] as A[]),
-    get: (id: string) => (id in db) ? db[id] : null,
-    save: (a: A) => { db[a.ID] = a }
-  }
-}
-const context: Context = { books: repo(books, genBooks), videos: repo(videos, genVideos) }
+const repo = <A extends {ID: string}>(db: {[key: string]: A}): Repo<A> => ({
+  all: () => Object.keys(db).reduce((acc, e) => [...acc, db[e]], [] as A[]),
+  get: (id: string) => (id in db) ? db[id] : null,
+  save: (a: A) => { db[a.ID] = a },
+  seed: (seed: A[]) => 
+    seed.forEach(e => { if (!(e.ID in db)) db[e.ID] = e })
+})
+
+const context: Context = { books: repo(books), videos: repo(videos) }
+context.books.seed(genBooks(7))
+context.videos.seed(genVideos(7))
 
 const GqlBook = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.dictWithResolvers({GraphQL: {Named: "Book"}, props: () => bookProps(T)},
@@ -115,11 +117,11 @@ const queryProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
   media: T.gqlResolver({
     parent: T.dict({GraphQL: {Named: "Query"}, props: () => ({})}),
     context: lib.type<Context>(),
-    args: {GraphQL: {Named: "MediaQueryInput"}, props: () => ({seed: T.num({})})},
+    args: null,
     output: T.array({of: GqlMedia(T)}),
-    resolve: (_, {input: {seed}}, context) => Promise.resolve(
-      [...context.books(seed).all().map(x => ({...x, type: "Book" as const})),
-       ...context.videos(seed).all().map(x => ({...x, type: "Video" as const}))])})
+    resolve: (_, __, context) => Promise.resolve(
+      [...context.books.all().map(x => ({...x, type: "Book" as const})),
+       ...context.videos.all().map(x => ({...x, type: "Video" as const}))])})
 })
 
 const Query = <F extends lib.Target>(T: GqlAlg<F>) =>
@@ -129,20 +131,30 @@ const coalesce = <A>(l: A | null, r: A) =>
   l === null || undefined ? r : l
 
 const mutationProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
+  seed: T.gqlResolver({
+    parent: T.dict({GraphQL: {Named: "Mutation"}, props: () => ({})}),
+    context: lib.type<Context>(),
+    args: {GraphQL: {Named: "SeedInput"}, props: () => ({seed: T.num({})})},
+    output: T.bool({}),
+    resolve: (_, {input: {seed}}, context) => {
+      context.books.seed(genBooks(seed))
+      context.videos.seed(genVideos(seed))
+      return Promise.resolve(true)
+    }}),
   updateBook: T.gqlResolver({
     parent: T.dict({GraphQL: {Named: "Mutation"}, props: () => ({})}),
     context: lib.type<Context>(),
     args: UpdateBook(T),
     output: GqlBook(T),
-    resolve: (_, {input: {ID, seed, ...rest}}, context) => {
-      const existing = context.books(seed).get(ID)
+    resolve: (_, {input: {ID, ...rest}}, context) => {
+      const existing = context.books.get(ID)
       if (!existing) return Promise.reject(new Error(`No book found with ID ${ID}`))
       const update = {
         ...Object.keys(rest).reduce((acc, k) => 
           ({...acc, [k]: coalesce(
             rest[k as Exclude<"ID", keyof Book>], existing[k as keyof Book])}),
           {...existing}), ID: existing.ID}
-      context.books(seed).save(update)
+      context.books.save(update)
       return Promise.resolve(update)
     }}),
   updateVideo: T.gqlResolver({
@@ -150,15 +162,15 @@ const mutationProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
     context: lib.type<Context>(),
     args: UpdateVideo(T),
     output: Video(T),
-    resolve: (_, {input: {ID, seed, ...rest}}, context) => {
-      const existing = context.videos(seed).get(ID)
+    resolve: (_, {input: {ID, ...rest}}, context) => {
+      const existing = context.videos.get(ID)
       if (!existing) return Promise.reject(new Error(`No video found with ID ${ID}`))
       const update = {
         ...Object.keys(rest).reduce((acc, k) => 
           ({...acc, [k]: coalesce(
             rest[k as Exclude<"ID", keyof Video>], existing[k as keyof Video])}),
           {...existing}), ID: existing.ID}
-      context.videos(seed).save(update)
+      context.videos.save(update)
       return Promise.resolve(update)
     }})
 })
