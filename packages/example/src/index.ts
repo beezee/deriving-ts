@@ -5,8 +5,7 @@ import * as fc from 'fast-check';
 import * as prand from 'pure-rand';
 import * as def from 'graphql/type/definition';
 import { SafeIntResolver as SafeInt } from 'graphql-scalars';
-import { ApolloServer, gql } from 'apollo-server';
-import { buildASTSchema, printSchema } from 'graphql';
+import { ApolloServer } from 'apollo-server';
 
 
 type Ops = "dict" | "array" | "str" | "bool" | "num" | "sum"

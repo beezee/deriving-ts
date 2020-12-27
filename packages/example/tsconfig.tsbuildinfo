@@ -2157,7 +2157,7 @@
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
-        "version": "bd5d598f28c481e54a870323e78898a45500ac3ac73af5e020ec27ae0c652704",
+        "version": "61a14377b48bef891ddd9a124981a391f4ba84d527bea6341b948c83e3c23417",
         "signature": "f667f6b1d66ba55f0dcd27f5ff050063fecfe289bad00e8c5d48344a775c1439",
         "affectsGlobalScope": false
       },
@@ -3851,7 +3851,6 @@
         "../../node_modules/apollo-server/dist/index.d.ts",
         "../../node_modules/fast-check/lib/types/fast-check.d.ts",
         "../../node_modules/graphql-scalars/index.d.ts",
-        "../../node_modules/graphql/index.d.ts",
         "../../node_modules/graphql/type/definition.d.ts",
         "../../node_modules/pure-rand/lib/types/pure-rand.d.ts",
         "../core/lib/index.d.ts",
