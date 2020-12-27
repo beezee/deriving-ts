@@ -92,8 +92,8 @@
         "affectsGlobalScope": false
       },
       "../core/lib/types.d.ts": {
-        "version": "cf2d820d5bf0fc82be14f0f0eec5d413deb41d7ee013cf132ade76fd5164c0cf",
-        "signature": "cf2d820d5bf0fc82be14f0f0eec5d413deb41d7ee013cf132ade76fd5164c0cf",
+        "version": "0f25fae4e43c5721d05eca396974cfb3c611c5e2b6261bf4b0f6ac5bbdbf09e9",
+        "signature": "0f25fae4e43c5721d05eca396974cfb3c611c5e2b6261bf4b0f6ac5bbdbf09e9",
         "affectsGlobalScope": false
       },
       "../core/lib/utils.d.ts": {
@@ -107,8 +107,8 @@
         "affectsGlobalScope": false
       },
       "./src/inputs.ts": {
-        "version": "ad37d43bc5da236b222e6d2980b58447969c14c2cc03c0f8d3741cca131337cc",
-        "signature": "a5f1be4c44baf0539683952fb044dea1d9770e12bffbc587bca9781c25db22dd",
+        "version": "bf096f39c14d5be0cddbe360127fb964d280e1c67f0b8e42bba8e008f4274a7b",
+        "signature": "587ab915c581968ec8a4d2384a4233dbb2f6f282042ab817736a341948a26581",
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
@@ -164,11 +164,6 @@
       "../../node_modules/graphql/type/definition.d.ts": {
         "version": "58d4731b1b9da2133f15c139c5a39154549e227b7fd7051d6933372de89b3b00",
         "signature": "58d4731b1b9da2133f15c139c5a39154549e227b7fd7051d6933372de89b3b00",
-        "affectsGlobalScope": false
-      },
-      "./src/interpreter.ts": {
-        "version": "0899089329481901eeac198cd21bc4bfeafbf88e48e8e70aa1c157dedee66e1b",
-        "signature": "c18e1f7fc7126a4480a588cf0caa5b469948ecf091912a0fd09f5a944728e2b3",
         "affectsGlobalScope": false
       },
       "../../node_modules/graphql/version.d.ts": {
@@ -614,6 +609,11 @@
       "../../node_modules/graphql/index.d.ts": {
         "version": "5375bb0209e24fa9f1968d78202308dc4d7762bd1a85c50e32caedd83b49c70d",
         "signature": "5375bb0209e24fa9f1968d78202308dc4d7762bd1a85c50e32caedd83b49c70d",
+        "affectsGlobalScope": false
+      },
+      "./src/interpreter.ts": {
+        "version": "f4f535b128ec9fa434a60ab7457374f178af5829609ac5b7a529ad1d853e5a87",
+        "signature": "1e233789e8fcf9b8d4de8f5dd1fedbe3d16d187fbbeb38caf586e560df87410a",
         "affectsGlobalScope": false
       },
       "./src/index.spec.ts": {
@@ -1364,6 +1364,7 @@
         "./src/interpreter.ts"
       ],
       "./src/interpreter.ts": [
+        "../../node_modules/graphql/index.d.ts",
         "../../node_modules/graphql/language/ast.d.ts",
         "../../node_modules/graphql/type/definition.d.ts",
         "../core/lib/index.d.ts",

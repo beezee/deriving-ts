@@ -62,21 +62,29 @@ fc.Memo<number> => fc.memo(_ => {
 })
 
 export type FCAlg = lib.Alg<URI, 
-  "bool" | "str" | "num" | "nullable" | "array" | "recurse" | "dict",
+  "bool" | "str" | "num" | "nullable" | "array" | "recurse" | "dict" | "sum",
   URI>
 
-export const FastCheck: () => FCAlg = () =>
-  ({str, num, 
+export const FastCheck: () => FCAlg = () => {
+  const dict = <T>({props: mkProps}: lib.DictArgs<URI, URI, T>) => {
+    const props = mkProps()
+    return fc.memo(n => Object.keys(props).reduce((a, k) =>
+      a.chain(o => props[k as keyof T](n-1).map(v => ({...o, [k]: v}))), fc.constant({} as T)))
+  }
+  return ({str, num, 
     bool: () => fc.memo(n => fc.boolean()),
     nullable: ({of: x, FastCheck: input}) => 
       fc.memo(n => fc.option(x(n), input || {})),
     array: ({of: x, FastCheck: input}) => fc.memo(n => fc.array(x(n), input || {})),
     recurse: (_, f, map, i) => fc.memo(n =>
       n <= 1 ? fc.constant(i.FastCheck.baseCase) : map(f())(n)),
-    dict: <T>({props: mkProps}: lib.DictArgs<URI, URI, T>) => {
-      const props = mkProps()
-      return fc.memo(n => Object.keys(props).reduce((a, k) =>
-        a.chain(o => props[k as keyof T](n-1).map(v => ({...o, [k]: v}))), fc.constant({} as T)))
-    }
+    sum: <K extends string, A>(
+      i: {key: K, props: {[k in keyof A]: lib.Props<URI, A[k]>}}):
+      lib.Result<URI, {[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]> =>
+        fc.memo(n => fc.oneof(...Object.keys(i.props).map(k =>
+          dict({props: () => i.props[k as keyof A]})(n).map(
+          d => ({...d, ...({[i.key as K]: k} as {[x in K]: keyof A})}))))),
+    dict
   })
+}
 

@@ -9,7 +9,7 @@ import { ApolloServer, gql } from 'apollo-server';
 import { buildASTSchema, printSchema } from 'graphql';
 
 
-type Ops = "dict" | "array" | "str" | "bool" | "num"
+type Ops = "dict" | "array" | "str" | "bool" | "num" | "sum"
 type Inputs = "GraphQL" | "FastCheck"
 type Alg<F extends lib.Target> = lib.Alg<F, Ops, Inputs>
 
@@ -25,6 +25,21 @@ type Book = lib.TypeOf<typeof BookType>
 const arbBooks: fc.Arbitrary<Book[]> = 
   fc.array(Book(fastcheck.FastCheck())(3), 2, 4)
 const books = (s: number): Book[] => arbBooks.generate(new fc.Random(prand.mersenne(s))).value
+
+const videoProps = <F extends lib.Target>(T: Alg<F>) => {
+  const {title, author: producer} = bookProps(T)
+  return {title, producer}
+}
+
+const Video = <F extends lib.Target>(T: Alg<F>) =>
+  T.dict({GraphQL: {Named: "Video"}, props: () => videoProps(T)})
+const VideoType = Video(lib.Type)
+type Video = lib.TypeOf<typeof VideoType>
+
+const arbVideos: fc.Arbitrary<Video[]> =
+  fc.array(Video(fastcheck.FastCheck())(3), 3, 5)
+const videos = (s: number): Video[] => arbVideos.generate(new fc.Random(prand.mersenne(s))).value
+
 
 type GqlAlg<F extends lib.Target> = lib.Alg<F, 
   Ops | "gqlResolver" | "gqlScalar" | "dictWithResolvers", Inputs>
@@ -43,6 +58,11 @@ const GqlBook = <F extends lib.Target>(T: GqlAlg<F>) =>
         resolve: ({title}, {input: {max}}) => Promise.resolve(Math.min(max, title.length))
       })})})
 
+// TODO - shape of sum means no dictWithResolvers, must manually ensure inclusion outside sum
+const Media = <F extends lib.Target>(T: GqlAlg<F>) =>
+  T.sum({GraphQL: {Named: "Media"}, key: "type",
+    props: {Book: bookProps(T), Video: videoProps(T)}})
+
 const PosInt = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.gqlScalar({config: (<def.GraphQLScalarTypeConfig<string | number, any>>SafeInt)})
 
@@ -52,7 +72,15 @@ const queryProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
     context: T.dict({GraphQL: {Named: 'Context'}, props: () => ({foo: T.str({})})}),
     args: {GraphQL: {Named: "BooksQueryInput"}, props: () => ({seed: T.num({})})},
     output: T.array({of: GqlBook(T)}),
-    resolve: (_, {input: {seed}}) => Promise.resolve(books(seed))})
+    resolve: (_, {input: {seed}}) => Promise.resolve(books(seed))}),
+  media: T.gqlResolver({
+    parent: T.dict({GraphQL: {Named: "Query"}, props: () => ({})}),
+    context: Context(T),
+    args: {GraphQL: {Named: "MediaQueryInput"}, props: () => ({seed: T.num({})})},
+    output: T.array({of: Media(T)}),
+    resolve: (_, {input: {seed}}) => Promise.resolve(
+      [...books(seed).map(x => ({...x, type: "Book" as const})),
+       ...videos(seed).map(x => ({...x, type: "Video" as const}))])}),
 })
 
 const Query = <F extends lib.Target>(T: GqlAlg<F>) =>

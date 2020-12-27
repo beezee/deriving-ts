@@ -29,10 +29,10 @@ const adtMembers = <F extends lib.Target>(T: Alg<F>) =>
   ({t1: t1Props(T), t2: t2Props(T), t3: t3Props(T)})
 
 const adt = <F extends lib.Target>(T: Alg<F>) =>
-  T.sumMembers("type", adtMembers(T))
+  T.sumMembers({key: "type", props: adtMembers(T)})
 
 const sum = <F extends lib.Target>(T: Alg<F>) =>
-  T.sum("type", adtMembers(T))
+  T.sum({key: "type", props: adtMembers(T)})
 
 const assertSum = sum(lib.Type)
 

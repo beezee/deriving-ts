@@ -31,9 +31,11 @@ const gqlScalar = (tpe: string): ast.TypeDefinitionNode =>
   ({"kind": "ScalarTypeDefinition",
     "name": {"kind": "Name", "value": tpe}})
 
+const namedType = (tpe: string): ast.NamedTypeNode =>
+  ({"kind": "NamedType", "name": {"kind": "Name", "value": tpe}})
+
 const gqlPrim = (tpe: string): ast.NonNullTypeNode =>
-  ({"kind": "NonNullType",
-    "type": {"kind": "NamedType", "name": {"kind": "Name", "value": tpe,}}})
+  ({"kind": "NonNullType", type: namedType(tpe)})
 
 const option = (node: ast.TypeNode) =>
   node.kind === "NonNullType" ? node.type : node
@@ -76,8 +78,14 @@ ast.InputValueDefinitionNode =>
     name: {kind: "Name", value: name},
     type: node})
 
+const union = (name: string, types: ast.NamedTypeNode[]):
+ast.UnionTypeDefinitionNode =>
+  ({kind: "UnionTypeDefinition",
+    name: {kind: "Name", value: name},
+    types})
+
 type GQLAlg = lib.Alg<URI,
-  "str" | "num" | "nullable" | "array" | "bool" |
+  "str" | "num" | "nullable" | "array" | "bool" | "sum" |
   "recurse" | "dict" | "gqlResolver" | "gqlScalar" |
   "dictWithResolvers",
   URI>
@@ -148,6 +156,19 @@ export const GQL: () => GQLAlg & {
     }),
     gqlResolver: ({parent: p, args: a, context: c, output: o, resolve: r}) =>
       ({...o, arg: input(a), resolveFn: r}),
+    // TODO - support recursive types in a union
+    sum: <K extends string, A>(
+      i: {GraphQL: {Named: string}, key: K, props: {[k in keyof A]: lib.Props<URI, A[k]>}}) => {
+        const {GraphQL: {Named}} = i
+        Object.keys(i.props).forEach(k =>
+          dict({GraphQL: {Named: k}, props: () => i.props[k as keyof A]}))
+        mergeDef(Named, union(Named, Object.keys(i.props).map(namedType)))
+        _resolveCache[Named] = (Named in _resolveCache)
+          ? {..._resolveCache[Named], 
+            __resolveType: (p: {[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]) => p[i.key]}
+          : {__resolveType: (p: {[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]) => p[i.key]}
+        return gqlPrim(i.GraphQL.Named)
+    },
     dict,
     dictWithResolvers: <T, R>(
       {GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>,
@@ -168,6 +189,7 @@ export const GQL: () => GQLAlg & {
 type GQLProg<A> = (alg: GQLAlg) => lib.Result<URI, A>
 type SchemaInput<Q, M> = {Query: GQLProg<Q>, Mutation?: GQLProg<M>}
 
+import { buildASTSchema, printSchema } from 'graphql';
 // TODO - this return type is a disappointment
 export const BuildSchema = <Q, M>(schema: SchemaInput<Q, M>):
 {typeDefs: ast.DocumentNode, resolvers: any} => {
