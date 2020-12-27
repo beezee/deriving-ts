@@ -53,7 +53,7 @@ const tnrResolver = <F extends lib.Target>(T: ResolverAlg<F>) =>
      count: T.gqlResolver({
       parent: thingNoRec(T), args: {
         GraphQL: {Named: "ThingCountInput"}, props: () => ({thing: T.array({of: thing(T)})})},
-      context: T.dict({GraphQL: {Named: 'TRArgs'}, props: () => ({})}),
+      context: lib.type<unknown>(),
       output: T.num({}), resolve: (p, a, c) => Promise.resolve(2)})})})
 
 const assertTrs = tnrResolver(lib.Type)

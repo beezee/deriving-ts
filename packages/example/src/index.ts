@@ -8,9 +8,15 @@ import { SafeIntResolver as SafeInt } from 'graphql-scalars';
 import { ApolloServer } from 'apollo-server';
 
 
-type Ops = "dict" | "array" | "str" | "bool" | "num" | "sum"
+type Ops = "dict" | "array" | "str" | "bool" | "num" | "sum" | "nullable"
 type Inputs = "GraphQL" | "FastCheck"
 type Alg<F extends lib.Target> = lib.Alg<F, Ops, Inputs>
+
+const makeOptional = <F extends lib.Target, A>(T: Alg<F>, props: lib.Props<F, A>):
+lib.Props<F, {[k in keyof A]: A[k] | null}> =>
+  Object.keys(props).reduce((acc, k) => ({...acc, 
+    [k]: T.nullable({of: props[k as keyof A]})}),
+    {} as lib.Props<F, {[k in keyof A]: A[k] | null}>)
 
 const bookProps = <F extends lib.Target>(T: Alg<F>) => ({
   ID: T.str({FastCheck: {type: "uuid"}, GraphQL: {type: "ID"}}),
@@ -22,6 +28,14 @@ const Book = <F extends lib.Target>(T: Alg<F>) =>
 const BookType = Book(lib.Type)
 type Book = lib.TypeOf<typeof BookType>
 
+const UpdateBook = <F extends lib.Target>(T: Alg<F>) => {
+  const {ID, ...rest} = bookProps(T)
+  return {
+    GraphQL: {Named: "UpdateBook"},
+    props: () => ({ID, seed: T.num({}), ...makeOptional(T, rest)})
+  }
+}
+
 const videoProps = <F extends lib.Target>(T: Alg<F>) => {
   const {ID, title, author: producer} = bookProps(T)
   return {ID, title, producer}
@@ -31,6 +45,14 @@ const Video = <F extends lib.Target>(T: Alg<F>) =>
   T.dict({GraphQL: {Named: "Video"}, props: () => videoProps(T)})
 const VideoType = Video(lib.Type)
 type Video = lib.TypeOf<typeof VideoType>
+
+const UpdateVideo = <F extends lib.Target>(T: Alg<F>) => {
+  const {ID, ...rest} = videoProps(T)
+  return {
+    GraphQL: {Named: "UpdateVideo"},
+    props: () => ({ID, seed: T.num({}), ...makeOptional(T, rest)})
+  }
+}
 
 const Media = <F extends lib.Target>(T: Alg<F>) =>
   T.sum({GraphQL: {Named: "Media"}, key: "type",
@@ -43,12 +65,33 @@ const arbMedia: fc.Arbitrary<Media[]> =
     FastCheck: {minLength: 2, maxLength: 10},
     of: Media(fastcheck.FastCheck())})(3)
 const media = (s: number): Media[] => arbMedia.generate(new fc.Random(prand.mersenne(s))).value
+const genBooks = (s: number): Book[] => media(s).reduce(
+  (acc, e) => [...acc, ...((e.type === "Book") ? [e] : [])], [] as Book[])
+const genVideos = (s: number): Video[] => media(s).reduce(
+  (acc, e) => [...acc, ...((e.type === "Video") ? [e] : [])], [] as Video[])
 
 type GqlAlg<F extends lib.Target> = lib.Alg<F, 
   Ops | "gqlResolver" | "gqlScalar" | "dictWithResolvers", Inputs>
 
-const Context = <F extends lib.Target>(T: GqlAlg<F>) =>
-  T.dict({GraphQL: {Named: "Context"}, props: () => ({foo: T.str({})})})
+interface Repo<A> {
+  all: () => A[]
+  get: (id: string) => A | null
+  save: (a: A) => void
+}
+type Context = { books: (s: number) => Repo<Book>, videos: (s: number) => Repo<Video> }
+
+const books: {[key: string]: Book} = {}
+const videos: {[key: string]: Video} = {}
+const repo = <A extends {ID: string}>(
+  db: {[key: string]: A}, gen: (s: number) => A[]): ((s: number) => Repo<A>) => (s: number) => {
+  gen(s).forEach(e => { if (!(e.ID in db)) db[e.ID] = e })
+  return {
+    all: () => Object.keys(db).reduce((acc, e) => [...acc, db[e]], [] as A[]),
+    get: (id: string) => (id in db) ? db[id] : null,
+    save: (a: A) => { db[a.ID] = a }
+  }
+}
+const context: Context = { books: repo(books, genBooks), videos: repo(videos, genVideos) }
 
 const GqlBook = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.dictWithResolvers({GraphQL: {Named: "Book"}, props: () => bookProps(T)},
@@ -56,7 +99,7 @@ const GqlBook = <F extends lib.Target>(T: GqlAlg<F>) =>
       titleLength: T.gqlResolver({
         parent: Book(T),
         args: {GraphQL: {Named: "BookAvailableInput"}, props: () => ({max: T.num({})})},
-        context: Context(T),
+        context: lib.type<Context>(),
         output: T.num({}),
         resolve: ({title}, {input: {max}}) => Promise.resolve(Math.min(max, title.length))
       })})})
@@ -71,18 +114,61 @@ const PosInt = <F extends lib.Target>(T: GqlAlg<F>) =>
 const queryProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
   media: T.gqlResolver({
     parent: T.dict({GraphQL: {Named: "Query"}, props: () => ({})}),
-    context: Context(T),
+    context: lib.type<Context>(),
     args: {GraphQL: {Named: "MediaQueryInput"}, props: () => ({seed: T.num({})})},
     output: T.array({of: GqlMedia(T)}),
-    resolve: (_, {input: {seed}}) => Promise.resolve(media(seed))})
+    resolve: (_, {input: {seed}}, context) => Promise.resolve(
+      [...context.books(seed).all().map(x => ({...x, type: "Book" as const})),
+       ...context.videos(seed).all().map(x => ({...x, type: "Video" as const}))])})
 })
 
 const Query = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.dict({GraphQL: {Named: "Query"}, props: () => queryProps(T)})
 
-const schema = gqld.BuildSchema({Query})
+const coalesce = <A>(l: A | null, r: A) =>
+  l === null || undefined ? r : l
 
-const server = new ApolloServer({...schema, cacheControl: false })
+const mutationProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
+  updateBook: T.gqlResolver({
+    parent: T.dict({GraphQL: {Named: "Mutation"}, props: () => ({})}),
+    context: lib.type<Context>(),
+    args: UpdateBook(T),
+    output: GqlBook(T),
+    resolve: (_, {input: {ID, seed, ...rest}}, context) => {
+      const existing = context.books(seed).get(ID)
+      if (!existing) return Promise.reject(new Error(`No book found with ID ${ID}`))
+      const update = {
+        ...Object.keys(rest).reduce((acc, k) => 
+          ({...acc, [k]: coalesce(
+            rest[k as Exclude<"ID", keyof Book>], existing[k as keyof Book])}),
+          {...existing}), ID: existing.ID}
+      context.books(seed).save(update)
+      return Promise.resolve(update)
+    }}),
+  updateVideo: T.gqlResolver({
+    parent: T.dict({GraphQL: {Named: "Mutation"}, props: () => ({})}),
+    context: lib.type<Context>(),
+    args: UpdateVideo(T),
+    output: Video(T),
+    resolve: (_, {input: {ID, seed, ...rest}}, context) => {
+      const existing = context.videos(seed).get(ID)
+      if (!existing) return Promise.reject(new Error(`No video found with ID ${ID}`))
+      const update = {
+        ...Object.keys(rest).reduce((acc, k) => 
+          ({...acc, [k]: coalesce(
+            rest[k as Exclude<"ID", keyof Video>], existing[k as keyof Video])}),
+          {...existing}), ID: existing.ID}
+      context.videos(seed).save(update)
+      return Promise.resolve(update)
+    }})
+})
+
+const Mutation = <F extends lib.Target>(T: GqlAlg<F>) =>
+  T.dict({GraphQL: {Named: "Mutation"}, props: () => mutationProps(T)})
+
+const schema = gqld.BuildSchema({Query, Mutation})
+
+const server = new ApolloServer({...schema, cacheControl: false, context })
 
 server.listen().then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);

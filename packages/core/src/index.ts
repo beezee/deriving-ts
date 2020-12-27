@@ -38,4 +38,6 @@ export type AlgInputs<A> = A extends Alg<any, keyof _Alg<Target, Input>, infer I
 export const Type: Alg<"Type", keyof _Alg<Target, Input>> = 
   new Proxy({}, {get: () => (...args: any) => (_: any) => undefined}) as any
 
+export const type = <A>() => (a: A): void => undefined
+
 export type TypeOf<A> = A extends (a: infer B) => void ? B : never

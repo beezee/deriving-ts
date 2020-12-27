@@ -15,7 +15,7 @@ declare module "@deriving-ts/core" {
   interface _Alg<T extends Target, I extends Input> {
     gqlResolver: <Parent, Args, Context, Output>(i: lib.InputOf<"gqlResolver", I, Output> & {
       parent: Result<T, Parent>, args: lib.DictArgs<T, I, Args>,
-      context: Result<T, Context>, output: Result<T, Output>,
+      context: (c: Context) => void, output: Result<T, Output>,
       resolve: (parent: Parent, args: {input: Args}, context: Context) => Promise<Output>}) =>
       Result<T, (parent: Parent, args: {input: Args}, context: Context) => Promise<Output>>
     gqlScalar: <A>(i: lib.InputOf<"gqlScalar", I, A> & {
@@ -90,6 +90,13 @@ type GQLAlg = lib.Alg<URI,
   "dictWithResolvers",
   URI>
 
+const uniqFields = <A extends {name: {value: string}}>(la: A[], ra: A[]): A[] => {
+  const dedup: Record<string, A> = {}
+  la.forEach(x => dedup[x.name.value] = x)
+  ra.forEach(x => dedup[x.name.value] = x)
+  return Object.keys(dedup).reduce((acc, k) => [...acc, dedup[k]], [] as A[])
+}
+
 export const GQL: () => GQLAlg & {
   definitions: () => ast.TypeDefinitionNode[],
   scalars: () => {[key: string]: def.GraphQLScalarType},
@@ -100,11 +107,11 @@ export const GQL: () => GQLAlg & {
     if (def && def.kind === "InputObjectTypeDefinition" && 
         node.kind === "InputObjectTypeDefinition")
       definitions[key] = {...def,
-        fields: [...(def.fields || []), ...(node.fields || [])]}
+        fields: uniqFields((def.fields || []).slice(), (node.fields || []).slice())}
     else if (def && def.kind === "ObjectTypeDefinition" &&
              node.kind === "ObjectTypeDefinition")
       definitions[key] = {...def,
-        fields: [...(def.fields || []), ...(node.fields || [])]}
+        fields: uniqFields((def.fields || []).slice(), (node.fields || []).slice())}
     else
       definitions[key] = node
   }
@@ -139,8 +146,7 @@ export const GQL: () => GQLAlg & {
     return ret
   }
   return {
-    definitions: () => Object.keys(definitions)
-      .filter(k => k !== "Context").map(k => definitions[k]),
+    definitions: () => Object.keys(definitions).map(k => definitions[k]),
     scalars: () => ({...scalars}),
     resolvers: () => ({..._resolveCache}),
     str: (i) => gqlPrim(i.GraphQL?.type || 'String'),
