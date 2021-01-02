@@ -106,12 +106,10 @@ const uniqFields = <A extends {name: {value: string}}>(la: A[], ra: A[]): A[] =>
 }
 
 export const GQL: () => GQLAlg & {
-  shape: () => Record<string, any>,
   definitions: () => ast.TypeDefinitionNode[],
   scalars: () => {[key: string]: def.GraphQLScalarType},
   resolvers: () => {[key: string]: object},
   discriminants: () => {[key: string]: object}} = () => {
-  let shape: Record<string, any> = {}
   let definitions: {[key: string]: ast.TypeDefinitionNode} = {}
   const mergeDef = (key: string, node: ast.TypeDefinitionNode) => {
     const def = definitions[key]
@@ -162,7 +160,6 @@ export const GQL: () => GQLAlg & {
     return ret
   }
   return {
-    shape: () => ({...shape}),
     definitions: () => Object.keys(definitions).map(k => definitions[k]),
     scalars: () => ({...scalars}),
     discriminants: () => ({..._discriminantCache}),
