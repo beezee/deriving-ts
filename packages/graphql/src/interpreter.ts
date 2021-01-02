@@ -8,36 +8,29 @@ type GQL = {
   prefix: string, tpe: string, children: string, optional: boolean,
   array: boolean}
 
-type Resolvers = 
-  Record<string, (parent: any, args: any, context: any) => Promise<any>>
+type ResolverPair<P, A, C, O> = 
+  { server: (parent: P, args: {input: A}, context: C) => Promise<O>,
+    client: (args: A) => Promise<O> }
 
-export type ResolverType<A> = "resolvers" extends keyof A ? A["resolvers"] : never
+type ResolverPairResult<T extends lib.Target, P, A, C, O> = 
+  {[k in keyof ResolverPair<P, A, C, O>]: lib.Result<T, ResolverPair<P, A, C, O>[k]>}
 
 declare module "@deriving-ts/core" {
   export interface Targets<A> {
-    GraphQL: ast.TypeNode & {arg?: ast.TypeNode, resolveFn?: (...a: any) => Promise<any>}
+    GraphQL: ast.TypeNode & {arg?: ast.TypeNode, isResolver?: boolean}
   }
   type ArgsType<A> = A extends null ? unknown : A
   interface _Alg<T extends Target, I extends Input> {
     gqlResolver: <Parent, Args, Context, Output>(i: lib.InputOf<"gqlResolver", I, Output> & {
       parent: Result<T, Parent>, args: lib.DictArgs<T, I, Args> | null,
-      context: (c: Context) => void, output: Result<T, Output>,
-      resolve: (parent: Parent, args: {input: Args}, context: Context) => Promise<Output>}) =>
-      Result<T, (parent: Parent, args: {input: ArgsType<Args>}, context: Context) =>
-        Promise<Output>>
+      context: (c: Context) => void, output: Result<T, Output>}) =>
+      ResolverPairResult<T, Parent, Args, Context, Output>
     gqlScalar: <A>(i: lib.InputOf<"gqlScalar", I, A> & {
       config: def.GraphQLScalarTypeConfig<A, any> }) => Result<T, A>
-    dictWithResolvers: <P, R>(
-      i: lib.DictArgs<T, I, P>,
-      r: {resolvers: () => lib.Props<T, R>}) =>
-      lib.Result<T, P>;
-    // TODO - resolver no longer takes impl.
-    // TODO - buildschema takes any of resolvers, validate keys at runtime
-    // These get you declaration w/o implementation for shared use f/e and b/e
-    dictWithResolvers2: <K extends string, P, R extends Resolvers>(
+    dictWithResolvers: <K extends string, P, R>(
       k: K, 
       i: lib.InputOf<"dictWithResolvers", I, P> & {props: () => lib.Props<T, P>},
-      r: {resolvers: () => lib.Props<T, R>}) =>
+      r: {resolvers: () => {[k in keyof R]: {server: lib.Result<T, R[k]>}}}) =>
       {resolvers: {[k in K]: R}, result: lib.Result<T, P>}
   }
 }
@@ -80,12 +73,12 @@ const arg = (node: ast.TypeNode) =>
     name: {kind: "Name" as const, value: "input"},
     type: node})
 
-const field = <A>(name: string, node: ast.TypeNode & {arg?: ast.TypeNode, resolveFn?: A}):
-[ast.FieldDefinitionNode, A | undefined] =>
+const field = (name: string, node: ast.TypeNode & {arg?: ast.TypeNode, isResolver?: boolean}):
+[ast.FieldDefinitionNode, boolean] =>
   [({kind: "FieldDefinition",
     name: {kind: "Name", value: name},
     arguments: node.arg ? [arg(node.arg)] : [],
-    type: node}), node.resolveFn]
+    type: node}), node.isResolver || false]
 
 const inputField = (name: string, node: ast.TypeNode):
 ast.InputValueDefinitionNode =>
@@ -113,9 +106,12 @@ const uniqFields = <A extends {name: {value: string}}>(la: A[], ra: A[]): A[] =>
 }
 
 export const GQL: () => GQLAlg & {
+  shape: () => Record<string, any>,
   definitions: () => ast.TypeDefinitionNode[],
   scalars: () => {[key: string]: def.GraphQLScalarType},
-  resolvers: () => {[key: string]: object}} = () => {
+  resolvers: () => {[key: string]: object},
+  discriminants: () => {[key: string]: object}} = () => {
+  let shape: Record<string, any> = {}
   let definitions: {[key: string]: ast.TypeDefinitionNode} = {}
   const mergeDef = (key: string, node: ast.TypeDefinitionNode) => {
     const def = definitions[key]
@@ -134,6 +130,7 @@ export const GQL: () => GQLAlg & {
   const _cache: {[key: string]: ast.TypeNode} = {}
   const memNamed = lib.memo(_cache)
   const _resolveCache: {[key: string]: object} = {}
+  const _discriminantCache: {[key: string]: object} = {}
   const input = <T>({GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>) => {
     if (Named in _cache) return _cache[Named]
     const ret = memNamed(Named, () => gqlPrim(Named))
@@ -143,11 +140,15 @@ export const GQL: () => GQLAlg & {
     return ret
   }
   const parseProps = <P>(props: lib.Props<URI, P>):
-  [keyof P, ast.FieldDefinitionNode, ((...a: any) => Promise<any>) | undefined][] =>
+  [keyof P, ast.FieldDefinitionNode, boolean][] =>
     Object.keys(props).map(k => {
       const [fd, rs] = field(k, props[k as keyof lib.Props<URI, P>])
       return [k as keyof P, fd, rs]
     })
+  const serverResolvers = <R>(resolvers: {[k in keyof R]: {server: lib.Result<URI, R[k]>}}):
+  lib.Props<URI, R> =>
+    Object.keys(resolvers).reduce(
+      (acc, k) => ({...acc, [k]: resolvers[k as keyof R].server}), {} as any)
   const dict = <T>({GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>) => {
     if (Named in _cache) return _cache[Named]
     const ret = memNamed(Named, () => gqlPrim(Named))
@@ -161,8 +162,10 @@ export const GQL: () => GQLAlg & {
     return ret
   }
   return {
+    shape: () => ({...shape}),
     definitions: () => Object.keys(definitions).map(k => definitions[k]),
     scalars: () => ({...scalars}),
+    discriminants: () => ({..._discriminantCache}),
     resolvers: () => ({..._resolveCache}),
     str: (i) => gqlPrim(i.GraphQL?.type || 'String'),
     bool: () => gqlPrim('Boolean'),
@@ -175,46 +178,81 @@ export const GQL: () => GQLAlg & {
       definitions[i.name] = gqlScalar(i.name)
       return gqlPrim(i.name)
     }),
-    gqlResolver: ({parent: p, args: a, context: c, output: o, resolve: r}) =>
-      ({...o, ...(a ? {arg: input(a)} : {}), resolveFn: r}),
+    gqlResolver: ({parent: p, args: a, context: c, output: o}) =>
+      ({ server: {...o, ...(a ? {arg: input(a)} : {}), isResolver: true}, client: {} as any}),
     // TODO - support recursive types in a union
     sum: <K extends string, A>(
       i: {GraphQL: {Named: string}, key: K, props: {[k in keyof A]: lib.Result<URI, A[k]>}}) => {
         const {GraphQL: {Named}} = i
         mergeDef(Named, union(Named, Object.keys(i.props).map(namedType)))
-        _resolveCache[Named] = (Named in _resolveCache)
-          ? {..._resolveCache[Named], 
+        _discriminantCache[Named] = (Named in _discriminantCache)
+          ? {..._discriminantCache[Named], 
             __resolveType: (p: {[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]) => p[i.key]}
           : {__resolveType: (p: {[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]) => p[i.key]}
         return gqlPrim(i.GraphQL.Named)
     },
     dict,
-    dictWithResolvers: <T, R>(
-      {GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>,
-      {resolvers}: {resolvers: () => lib.Props<URI, R>}) => {
+    dictWithResolvers: <K extends string, P, R>(
+      Named: K,
+      {props: mkProps}: lib.InputOf<"dictWithResolvers", URI, P> & 
+        {props: () => lib.Props<URI, P>},
+      {resolvers}: {resolvers: () => {[k in keyof R]: {server: lib.Result<URI, R[k]>}}}) => {
       const ret = dict({GraphQL: {Named}, props: mkProps})
-      const props = parseProps(resolvers())
+      const props = parseProps(serverResolvers(resolvers()))
       mergeDef(Named, object(Named, props.map(t => t[1])))
       props.forEach(([k, _, r]) => {
         if (r) _resolveCache[Named] = (Named in _resolveCache)
           ? ({...(_resolveCache[Named]), [k]: r})
           : {[k]: r}
       })
-      return ret
+      return {resolvers: {} as any, result: ret}
     }
   }
 };
 
-type GQLProg<A> = (alg: GQLAlg) => lib.Result<URI, A>
-type SchemaInput<Q, M> = {Query: GQLProg<Q>, Mutation?: GQLProg<M>}
+const merge = (obj1: Record<string, any>, obj2: Record<string, any>) => {
+  const recursiveMerge = (obj: Record<string, any>, entries: Record<string, any>) => {
+    for (const key of Object.keys(entries)) {
+      const value: any = entries[key]
+      if (typeof value === "object") {
+        obj[key] = key in obj ? {...obj[key]} : {};
+        recursiveMerge(obj[key], value)
+      } else {
+        obj[key] = value
+      }
+    }
+    return obj;
+  }
+  const copy = recursiveMerge({}, obj1)
+  return recursiveMerge(copy, obj2)
+}
 
-import { buildASTSchema, printSchema } from 'graphql';
+type GqlProg = (a: GQLAlg) => (lib.Result<URI, any> | {result: lib.Result<URI, any>})
+
+const isObject = (v: any): v is object => v && typeof v === 'object';
+function haltMissing(path: string[], a: Record<string, any>, b: Record<string, any>): void {
+    const missing: [string[], string][] = []
+    const rec = (path: string[], a: Record<string, any>, b: Record<string, any>): void => {
+      const _ = Array.from(new Set([...Object.keys(a), ...Object.keys(b)])).forEach(
+        k => ({ [k]: isObject(a[k])
+            ? rec([...path, k], a[k], isObject(b[k]) ? b[k] : {})
+            : (k in a && !!a[k]) ? (k in b) ? true : missing.push([path, k]) : true
+        }));
+    }
+    rec(path, a, b)
+    if (missing.length > 0)
+      throw new Error(`Missing resolvers \n\t${
+        missing.map(([p, k]) => `${p.join(".")}.${k}`).join("\n\t")}`)
+}
+
 // TODO - this return type is a disappointment
-export const BuildSchema = <Q, M>(schema: SchemaInput<Q, M>):
+export const BuildSchema = <Q, M>(defs: GqlProg[], resolvers: any[]):
 {typeDefs: ast.DocumentNode, resolvers: any} => {
   const interp = GQL()
-  schema.Query(interp)
-  if (schema.Mutation) schema.Mutation(interp)
+  defs.forEach(def => def(interp))
   const typeDefs = {kind: "Document" as const, definitions: interp.definitions()}
-  return ({typeDefs, resolvers: {...interp.scalars(), ...interp.resolvers()}})
+  const mergedResolvers = [interp.scalars(), interp.discriminants(), ...resolvers].reduce(
+    (acc, e) => merge(acc, e), {} as any)
+  haltMissing(["root"], interp.resolvers(), mergedResolvers)
+  return ({typeDefs, resolvers: mergedResolvers})
 }

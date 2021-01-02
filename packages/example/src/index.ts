@@ -96,42 +96,28 @@ context.books.seed(genBooks(7))
 context.videos.seed(genVideos(7))
 
 const GqlBook = <F extends lib.Target>(T: GqlAlg<F>) =>
-  T.dictWithResolvers({GraphQL: {Named: "Book"}, props: () => bookProps(T)},
+  T.dictWithResolvers("Book", {props: () => bookProps(T)},
     {resolvers: () => ({ 
       titleLength: T.gqlResolver({
         parent: Book(T),
         args: {GraphQL: {Named: "BookAvailableInput"}, props: () => ({max: T.num({})})},
         context: lib.type<Context>(),
-        output: T.num({}),
-        resolve: ({title}, {input: {max}}) => Promise.resolve(Math.min(max, title.length))
+        output: T.num({})
       })})})
 
-type GqlAlg2<F extends lib.Target> = lib.Alg<F, 
-  Ops | "gqlResolver" | "gqlScalar" | "dictWithResolvers2", Inputs>
-const GqlBook2 = <F extends lib.Target>(T: GqlAlg2<F>) =>
-  T.dictWithResolvers2("Book", {props: () => bookProps(T)},
-    {resolvers: () => ({ 
-      titleLength: T.gqlResolver({
-        parent: Book(T),
-        args: {GraphQL: {Named: "BookAvailableInput"}, props: () => ({max: T.num({})})},
-        context: lib.type<Context>(),
-        output: T.num({}),
-        resolve: ({title}, {input: {max}}) => Promise.resolve(Math.min(max, title.length))
-      })})})
-const BookResolversType = GqlBook2(lib.Type)
-type BookResolvers = typeof BookResolversType.resolvers
-const x: BookResolvers = {
+const GqlBookType = GqlBook(lib.Type)
+type BookResolvers = typeof GqlBookType.resolvers
+const BookResolvers: BookResolvers = {
   Book: {
     titleLength: ({title}, {input: {max}}) => Promise.resolve(Math.min(max, title.length))
   }
 }
-const tst = (x: Book) => BookResolversType.result(x)
 
 
 
 const GqlMedia = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.sum({GraphQL: {Named: "Media"}, key: "type",
-    props: {Book: GqlBook(T), Video: Video(T)}})
+    props: {Book: GqlBook(T).result, Video: Video(T)}})
 
 const PosInt = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.gqlScalar({config: (<def.GraphQLScalarTypeConfig<string | number, any>>SafeInt)})
@@ -141,14 +127,22 @@ const queryProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
     parent: T.dict({GraphQL: {Named: "Query"}, props: () => ({})}),
     context: lib.type<Context>(),
     args: null,
-    output: T.array({of: GqlMedia(T)}),
-    resolve: (_, __, context) => Promise.resolve(
-      [...context.books.all().map(x => ({...x, type: "Book" as const})),
-       ...context.videos.all().map(x => ({...x, type: "Video" as const}))])})
+    output: T.array({of: GqlMedia(T)})})
 })
 
 const Query = <F extends lib.Target>(T: GqlAlg<F>) =>
-  T.dict({GraphQL: {Named: "Query"}, props: () => queryProps(T)})
+  T.dictWithResolvers("Query", {props: () => ({})},
+    {resolvers: () => queryProps(T)})
+
+const QueryType = Query(lib.Type)
+type QueryResolvers = typeof QueryType.resolvers
+const QueryResolvers: QueryResolvers = {
+  Query: {
+    media: (_, __, context) => Promise.resolve(
+      [...context.books.all().map(x => ({...x, type: "Book" as const})),
+       ...context.videos.all().map(x => ({...x, type: "Video" as const}))])
+  }
+}
 
 const coalesce = <A>(l: A | null, r: A) =>
   l === null || undefined ? r : l
@@ -158,18 +152,33 @@ const mutationProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
     parent: T.dict({GraphQL: {Named: "Mutation"}, props: () => ({})}),
     context: lib.type<Context>(),
     args: {GraphQL: {Named: "SeedInput"}, props: () => ({seed: T.num({})})},
-    output: T.bool({}),
-    resolve: (_, {input: {seed}}, context) => {
-      context.books.seed(genBooks(seed))
-      context.videos.seed(genVideos(seed))
-      return Promise.resolve(true)
-    }}),
+    output: T.bool({})}),
   updateBook: T.gqlResolver({
     parent: T.dict({GraphQL: {Named: "Mutation"}, props: () => ({})}),
     context: lib.type<Context>(),
     args: UpdateBook(T),
-    output: GqlBook(T),
-    resolve: (_, {input: {ID, ...rest}}, context) => {
+    output: GqlBook(T).result}),
+  updateVideo: T.gqlResolver({
+    parent: T.dict({GraphQL: {Named: "Mutation"}, props: () => ({})}),
+    context: lib.type<Context>(),
+    args: UpdateVideo(T),
+    output: Video(T)})
+})
+
+const Mutation = <F extends lib.Target>(T: GqlAlg<F>) =>
+  T.dictWithResolvers("Mutation", {props: () => ({})},
+    {resolvers: () => mutationProps(T)})
+
+const MutationType = Mutation(lib.Type)
+type MutationResolvers = typeof MutationType.resolvers
+const MutationResolvers: MutationResolvers = {
+  Mutation: {
+    seed: (_, {input: {seed}}, context) => {
+      context.books.seed(genBooks(seed))
+      context.videos.seed(genVideos(seed))
+      return Promise.resolve(true)
+    },
+    updateBook: (_, {input: {ID, ...rest}}, context) => {
       const existing = context.books.get(ID)
       if (!existing) return Promise.reject(new Error(`No book found with ID ${ID}`))
       const update = {
@@ -179,13 +188,8 @@ const mutationProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
           {...existing}), ID: existing.ID}
       context.books.save(update)
       return Promise.resolve(update)
-    }}),
-  updateVideo: T.gqlResolver({
-    parent: T.dict({GraphQL: {Named: "Mutation"}, props: () => ({})}),
-    context: lib.type<Context>(),
-    args: UpdateVideo(T),
-    output: Video(T),
-    resolve: (_, {input: {ID, ...rest}}, context) => {
+    },
+    updateVideo: (_, {input: {ID, ...rest}}, context) => {
       const existing = context.videos.get(ID)
       if (!existing) return Promise.reject(new Error(`No video found with ID ${ID}`))
       const update = {
@@ -195,13 +199,12 @@ const mutationProps = <F extends lib.Target>(T: GqlAlg<F>) => ({
           {...existing}), ID: existing.ID}
       context.videos.save(update)
       return Promise.resolve(update)
-    }})
-})
+    }
+  }
+}
 
-const Mutation = <F extends lib.Target>(T: GqlAlg<F>) =>
-  T.dict({GraphQL: {Named: "Mutation"}, props: () => mutationProps(T)})
-
-const schema = gqld.BuildSchema({Query, Mutation})
+const schema = gqld.BuildSchema([Query, Mutation],
+  [QueryResolvers, MutationResolvers, BookResolvers])
 
 const server = new ApolloServer({...schema, cacheControl: false, context })
 

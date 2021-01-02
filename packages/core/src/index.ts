@@ -35,9 +35,12 @@ export type Alg<T extends Target, K extends keyof _Alg<Target, Input>, I extends
 export type AlgOps<A> = A extends Alg<any, infer K, Input> ? K : never
 export type AlgInputs<A> = A extends Alg<any, keyof _Alg<Target, Input>, infer I> ? I : never
 
-export const Type: Alg<"Type", keyof _Alg<Target, Input>> = 
-  new Proxy({}, {get: () => (...args: any) => (_: any) => undefined}) as any
-
 export const type = <A>() => (a: A): void => undefined
+
+export const Type: Alg<"Type", keyof _Alg<Target, Input>> = 
+  new Proxy(function() {}, {
+    get: () => (...args: any) => Type,
+    apply: (_: any) => undefined
+  }) as any
 
 export type TypeOf<A> = A extends (a: infer B) => void ? B : never

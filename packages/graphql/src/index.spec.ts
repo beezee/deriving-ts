@@ -4,7 +4,7 @@ import * as gql from './interpreter';
 import type * as def from 'graphql/type/definition';
 import { buildASTSchema, printSchema } from 'graphql';
 
-type Ops = "str" | "bool" | "num" | "nullable" | "array" | "recurse" | "dict"
+type Ops = "str" | "bool" | "num" | "nullable" | "array" | "recurse" | "dict" | "dictWithResolvers"
 type Inputs = "GraphQL"
 
 type Alg<F extends lib.Target> = lib.Alg<F, Ops, Inputs>
@@ -47,21 +47,27 @@ type SDate = lib.TypeOf<typeof sdateType>
 sdateType(new Date())
 
 const tnrResolver = <F extends lib.Target>(T: ResolverAlg<F>) =>
-  T.dict({GraphQL: {Named: 'ThingResolvers'}, props: () =>
+  T.dictWithResolvers('ThingR', {props: () =>
     ({...thingNoRecProps(T),
-     time: T.nullable({of: SDate(T)}),
-     count: T.gqlResolver({
-      parent: thingNoRec(T), args: {
-        GraphQL: {Named: "ThingCountInput"}, props: () => ({thing: T.array({of: thing(T)})})},
-      context: lib.type<unknown>(),
-      output: T.num({}), resolve: (p, a, c) => Promise.resolve(2)})})})
+     time: T.nullable({of: SDate(T)})})},
+     {resolvers: () => ({
+       count: T.gqlResolver({
+        parent: thingNoRec(T), args: {
+          GraphQL: {Named: "ThingCountInput"}, props: () => ({thing: T.array({of: thing(T)})})},
+        context: lib.type<unknown>(),
+        output: T.num({})})})})
 
 const assertTrs = tnrResolver(lib.Type)
-type ThingResolvers = lib.TypeOf<typeof assertTrs>
-const takeThingResolvers = (x: ThingResolvers): void => assertTrs(x)
-takeThingResolvers({foo: "hi", bar: 3, time: new Date(),
-  count: (parent: ThingNoRec, args: {input: {thing: Thing[]}}, context: unknown) => 
-    Promise.resolve(2)})
+type ThingR = lib.TypeOf<typeof assertTrs.result>
+const takeThingR = (x: ThingR): void => assertTrs.result(x)
+takeThingR({foo: "hi", bar: 3, time: new Date()})
+type ThingResolvers = typeof assertTrs.resolvers
+const x: ThingResolvers = {
+  ThingR: {
+    count: (parent: ThingNoRec, args: {input: {thing: Thing[]}}, context: unknown) => 
+      Promise.resolve(2)
+  }
+}
 
 const schema = (x: any) =>
   buildASTSchema({kind: "Document", definitions: x})

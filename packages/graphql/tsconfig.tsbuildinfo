@@ -102,8 +102,8 @@
         "affectsGlobalScope": false
       },
       "../core/lib/index.d.ts": {
-        "version": "657acac16a6d6bb4b988b436a042ee0b68f6551131a6e016a22f067cffd974b9",
-        "signature": "657acac16a6d6bb4b988b436a042ee0b68f6551131a6e016a22f067cffd974b9",
+        "version": "329e59f749848b4310ef6ec2069fa47808aad37bf3b1ba7a24765c0b0ef93e7b",
+        "signature": "329e59f749848b4310ef6ec2069fa47808aad37bf3b1ba7a24765c0b0ef93e7b",
         "affectsGlobalScope": false
       },
       "./src/inputs.ts": {
@@ -164,6 +164,11 @@
       "../../node_modules/graphql/type/definition.d.ts": {
         "version": "58d4731b1b9da2133f15c139c5a39154549e227b7fd7051d6933372de89b3b00",
         "signature": "58d4731b1b9da2133f15c139c5a39154549e227b7fd7051d6933372de89b3b00",
+        "affectsGlobalScope": false
+      },
+      "./src/interpreter.ts": {
+        "version": "9ed44a429c314603dd30299a368f65945a1ab53d04330184299d742cfe4e687c",
+        "signature": "50cfb36561f370e6cbbc267830cbdac94187f75b5a906da225c4b270da3e7b2f",
         "affectsGlobalScope": false
       },
       "../../node_modules/graphql/version.d.ts": {
@@ -611,13 +616,8 @@
         "signature": "5375bb0209e24fa9f1968d78202308dc4d7762bd1a85c50e32caedd83b49c70d",
         "affectsGlobalScope": false
       },
-      "./src/interpreter.ts": {
-        "version": "3f548c0047b85fd3d1f379bf326571b6ac1811d62cb90ef42632a3ca1a0ab5c3",
-        "signature": "3ac2af2854276253993f267592ff8757aca3f5cb05207018965c77397c86182f",
-        "affectsGlobalScope": false
-      },
       "./src/index.spec.ts": {
-        "version": "942e6620b15150300c41b7ed9ea4f3653b532a09e83691123bc97c2296d0348e",
+        "version": "b4fd48acbebd729f61bf590fc3657cfaa5eed272cf4839a50351bc7225e314a9",
         "signature": "e04d938303fe7fa3851a60d608014912163108a8045713ebbe0a6acac28bf40c",
         "affectsGlobalScope": false
       },
@@ -1364,7 +1364,6 @@
         "./src/interpreter.ts"
       ],
       "./src/interpreter.ts": [
-        "../../node_modules/graphql/index.d.ts",
         "../../node_modules/graphql/language/ast.d.ts",
         "../../node_modules/graphql/type/definition.d.ts",
         "../core/lib/index.d.ts",
