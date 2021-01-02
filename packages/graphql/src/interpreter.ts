@@ -242,7 +242,6 @@ function haltMissing(path: string[], a: Record<string, any>, b: Record<string, a
         missing.map(([p, k]) => `${p.join(".")}.${k}`).join("\n\t")}`)
 }
 
-// TODO - this return type is a disappointment
 export const BuildSchema = <Q, M>(defs: GqlProg[], resolvers: any[]):
 {typeDefs: ast.DocumentNode, resolvers: any} => {
   const interp = GQL()
