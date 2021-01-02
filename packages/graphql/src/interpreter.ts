@@ -8,6 +8,11 @@ type GQL = {
   prefix: string, tpe: string, children: string, optional: boolean,
   array: boolean}
 
+type Resolvers = 
+  Record<string, (parent: any, args: any, context: any) => Promise<any>>
+
+export type ResolverType<A> = "resolvers" extends keyof A ? A["resolvers"] : never
+
 declare module "@deriving-ts/core" {
   export interface Targets<A> {
     GraphQL: ast.TypeNode & {arg?: ast.TypeNode, resolveFn?: (...a: any) => Promise<any>}
@@ -26,6 +31,14 @@ declare module "@deriving-ts/core" {
       i: lib.DictArgs<T, I, P>,
       r: {resolvers: () => lib.Props<T, R>}) =>
       lib.Result<T, P>;
+    // TODO - resolver no longer takes impl.
+    // TODO - buildschema takes any of resolvers, validate keys at runtime
+    // These get you declaration w/o implementation for shared use f/e and b/e
+    dictWithResolvers2: <K extends string, P, R extends Resolvers>(
+      k: K, 
+      i: lib.InputOf<"dictWithResolvers", I, P> & {props: () => lib.Props<T, P>},
+      r: {resolvers: () => lib.Props<T, R>}) =>
+      {resolvers: {[k in K]: R}, result: lib.Result<T, P>}
   }
 }
 

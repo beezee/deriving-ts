@@ -106,6 +106,29 @@ const GqlBook = <F extends lib.Target>(T: GqlAlg<F>) =>
         resolve: ({title}, {input: {max}}) => Promise.resolve(Math.min(max, title.length))
       })})})
 
+type GqlAlg2<F extends lib.Target> = lib.Alg<F, 
+  Ops | "gqlResolver" | "gqlScalar" | "dictWithResolvers2", Inputs>
+const GqlBook2 = <F extends lib.Target>(T: GqlAlg2<F>) =>
+  T.dictWithResolvers2("Book", {props: () => bookProps(T)},
+    {resolvers: () => ({ 
+      titleLength: T.gqlResolver({
+        parent: Book(T),
+        args: {GraphQL: {Named: "BookAvailableInput"}, props: () => ({max: T.num({})})},
+        context: lib.type<Context>(),
+        output: T.num({}),
+        resolve: ({title}, {input: {max}}) => Promise.resolve(Math.min(max, title.length))
+      })})})
+const BookResolversType = GqlBook2(lib.Type)
+type BookResolvers = typeof BookResolversType.resolvers
+const x: BookResolvers = {
+  Book: {
+    titleLength: ({title}, {input: {max}}) => Promise.resolve(Math.min(max, title.length))
+  }
+}
+const tst = (x: Book) => BookResolversType.result(x)
+
+
+
 const GqlMedia = <F extends lib.Target>(T: GqlAlg<F>) =>
   T.sum({GraphQL: {Named: "Media"}, key: "type",
     props: {Book: GqlBook(T), Video: Video(T)}})
