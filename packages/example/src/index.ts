@@ -18,15 +18,36 @@ lib.Props<F, {[k in keyof A]: A[k] | null}> =>
     [k]: T.nullable({of: props[k as keyof A]})}),
     {} as lib.Props<F, {[k in keyof A]: A[k] | null}>)
 
-const bookProps = <F extends lib.Target>(T: Alg<F>) => ({
+type LimOps = "dict" | "str" | "bool" | "num"
+const bookProps = <F extends lib.Target>(T: lib.Alg<F, LimOps, Inputs>) => ({
   ID: T.str({FastCheck: {type: "uuid"}, GraphQL: {type: "ID"}}),
   title: T.str({FastCheck: {type: "lorem"}}),
   author: T.str({FastCheck: {type: "lorem"}}) })
 
-const Book = <F extends lib.Target>(T: Alg<F>) =>
+const Book = <F extends lib.Target>(T: lib.Alg<F, LimOps, Inputs>) =>
   T.dict({GraphQL: {Named: "Book"}, props: () => bookProps(T)})
+const HasBook = <F extends lib.Target>(T: lib.Alg<F, Exclude<GQLOps, "sum">, Inputs>) =>
+  T.dictWithResolvers("HB", {props: () => ({count: T.nullable({of: T.num({})})})},
+    {resolvers: () => ({ 
+      books: T.gqlResolver({
+        parent: Book(T),
+        args: {GraphQL: {Named: "BookAvailableInput"}, props: () => 
+          ({max: T.nullable({of: T.num({})})})},
+        context: lib.type<Context>(),
+        output: T.array({of: Book(T)})})})})
+
 const BookType = Book(lib.Type)
 type Book = lib.TypeOf<typeof BookType>
+
+const BookQ = HasBook(gqld.GQLClient())
+const value = <A>(x: A) => x
+const x = (b: Book) => BookQ.client({books: [b, b, b], count: 3})(({books, count}) => ({
+  count: count(value),
+  bookses: books({input: {max: null}})(({ID, title, author}) => 
+    ({idLength: ID(value), id: ID(value), title: title(value)}))}))
+const y: {count: number | null, bookses: {idLength: string, id: string, title: string}[]} = 
+  x({ID: "1", title: "hi", author: "there"})
+console.log(y)
 
 const UpdateBook = <F extends lib.Target>(T: Alg<F>) => {
   const {ID, ...rest} = bookProps(T)
@@ -70,8 +91,8 @@ const genBooks = (s: number): Book[] => media(s).reduce(
 const genVideos = (s: number): Video[] => media(s).reduce(
   (acc, e) => [...acc, ...((e.type === "Video") ? [e] : [])], [] as Video[])
 
-type GqlAlg<F extends lib.Target> = lib.Alg<F, 
-  Ops | "gqlResolver" | "gqlScalar" | "dictWithResolvers", Inputs>
+type GQLOps = Ops | "gqlResolver" | "gqlScalar" | "dictWithResolvers"
+type GqlAlg<F extends lib.Target> = lib.Alg<F, GQLOps, Inputs>
 
 interface Repo<A> {
   all: () => A[]

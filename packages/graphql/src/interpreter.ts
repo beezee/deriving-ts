@@ -8,30 +8,90 @@ type GQL = {
   prefix: string, tpe: string, children: string, optional: boolean,
   array: boolean}
 
-type ResolverPair<P, A, C, O> = 
-  { server: (parent: P, args: {input: A}, context: C) => Promise<O>,
-    client: (args: A) => Promise<O> }
+type GraphQLQuery<A> = [A] extends [A]
+  ? (a: ClientResolved<A>) => <T>(f: (a: QueryField<Client<A>>) => T) => UnQueryField<GetUQB<A>, T>
+  : never
 
-type ResolverPairResult<T extends lib.Target, P, A, C, O> = 
-  {[k in keyof ResolverPair<P, A, C, O>]: lib.Result<T, ResolverPair<P, A, C, O>[k]>}
+type ApGraphQLQuery<A> = [A] extends [(i: infer I) => infer O]
+  ? (i: I) => <T>(f: (a: QueryField<Client<O>>) => T) => UnQueryField<GetUQB<O>, T>
+  : [A] extends [(p: any, i: infer I, c: any) => Promise<infer O>]
+    ? (i: I) => <T>(f: (a: QueryField<Client<O>>) => T) => UnQueryField<GetUQB<O>, T>
+    : <T>(f: (a: QueryField<Client<A>>) => T) => UnQueryField<GetUQB<A>, T>
+
+export type QueryField<A> = [A] extends [(i: infer I) => infer O]
+  ? (i: I) => QueryField<O>
+  : [A] extends [(p: any, i: infer I, c: any) => Promise<infer O>]
+    ? (i: I) => QueryField<O>
+    : [A] extends [Array<(infer X)>]
+      ? QueryField<X>
+      : [A] extends [{[key: string]: any}]
+        ? {[k in keyof A]: ApGraphQLQuery<A[k]>}
+        : {__compileTimeOnlyQueryFieldA: NonNullable<A>, __gqlQueryField: any}
+
+const toQueryField = <A>(a: A): QueryField<A> => a as unknown as QueryField<A>
+const fromQueryField = <A>(a: QueryField<A>): A => a as unknown as A
+
+type Resolvers = {[key: string]: (parent: any, args: any, context: any) => Promise<any>}
+type DWRClient<P, R extends Resolvers> = 
+  P & {[k in keyof R]: ClientResolver<R[k]>}
+interface DWR<T extends lib.Target, K extends string, R extends Resolvers, P> {
+  resolvers: {[k in K]: R}, result: lib.Result<T, P>,
+  client: lib.Result<T, DWRClient<P, R>>}
+
+export type ClientResolver<A> = [A] extends [(p: any, a: infer I, c: any) => Promise<infer O>]
+  ? (a: I) => O
+  : A
+
+export type Client<A> = [A] extends [DWR<any, any, infer R, infer P>]
+  ? DWRClient<P, R>
+  : A
+
+export type ClientResolved<A> = [A] extends [(a: infer I) => infer O]
+  ? O
+  : [A] extends [(p: any, i: infer I, c: any) => Promise<infer O>]
+    ? O
+    : [A] extends [any[]]
+      ? A
+      : [A] extends [Record<string, any>]
+        ? {[k in keyof A]: ClientResolved<A[k]>}
+        : A
+
+interface UQFunctors<A> {
+  ID: A
+  List: A[]
+  Nullable: A | null
+}
+type UQBrand = keyof UQFunctors<any>
+type UQFunctor<B extends UQBrand, A> = UQFunctors<A>[B]
+
+export type UnQueryField<B extends UQBrand, A> =
+  "__compileTimeOnlyQueryFieldA" extends keyof A
+    ? UQFunctor<B, A["__compileTimeOnlyQueryFieldA"]>
+    : UQFunctor<B, A>
+
+type GetUQB<A> = [A] extends [any[]] ? "List" : [null] extends [A] ? "Nullable" : "ID"
+
+const unQueryField = <B extends UQBrand>() => <T>(t: UQFunctor<B, T>): UnQueryField<B, T> =>
+  t as UnQueryField<B, T>
 
 declare module "@deriving-ts/core" {
   export interface Targets<A> {
     GraphQL: ast.TypeNode & {arg?: ast.TypeNode, isResolver?: boolean}
+    GraphQLQuery: GraphQLQuery<A>
   }
   type ArgsType<A> = A extends null ? unknown : A
   interface _Alg<T extends Target, I extends Input> {
     gqlResolver: <Parent, Args, Context, Output>(i: lib.InputOf<"gqlResolver", I, Output> & {
       parent: Result<T, Parent>, args: lib.DictArgs<T, I, Args> | null,
       context: (c: Context) => void, output: Result<T, Output>}) =>
-      ResolverPairResult<T, Parent, Args, Context, Output>
+      lib.Result<T, (parent: Parent, args: {input: Args}, context: Context) => Promise<Output>>
     gqlScalar: <A>(i: lib.InputOf<"gqlScalar", I, A> & {
       config: def.GraphQLScalarTypeConfig<A, any> }) => Result<T, A>
-    dictWithResolvers: <K extends string, P, R>(
+    dictWithResolvers: <K extends string, P, R extends Resolvers>(
       k: K, 
       i: lib.InputOf<"dictWithResolvers", I, P> & {props: () => lib.Props<T, P>},
-      r: {resolvers: () => {[k in keyof R]: {server: lib.Result<T, R[k]>}}}) =>
-      {resolvers: {[k in K]: R}, result: lib.Result<T, P>}
+      r: {resolvers: () => {[k in keyof R]: lib.Result<T, R[k]>}}) =>
+      DWR<T, K, R, P>
   }
 }
 
@@ -143,10 +203,6 @@ export const GQL: () => GQLAlg & {
       const [fd, rs] = field(k, props[k as keyof lib.Props<URI, P>])
       return [k as keyof P, fd, rs]
     })
-  const serverResolvers = <R>(resolvers: {[k in keyof R]: {server: lib.Result<URI, R[k]>}}):
-  lib.Props<URI, R> =>
-    Object.keys(resolvers).reduce(
-      (acc, k) => ({...acc, [k]: resolvers[k as keyof R].server}), {} as any)
   const dict = <T>({GraphQL: {Named}, props: mkProps}: lib.DictArgs<URI, URI, T>) => {
     if (Named in _cache) return _cache[Named]
     const ret = memNamed(Named, () => gqlPrim(Named))
@@ -176,7 +232,7 @@ export const GQL: () => GQLAlg & {
       return gqlPrim(i.name)
     }),
     gqlResolver: ({parent: p, args: a, context: c, output: o}) =>
-      ({ server: {...o, ...(a ? {arg: input(a)} : {}), isResolver: true}, client: {} as any}),
+      ({...o, ...(a ? {arg: input(a)} : {}), isResolver: true}),
     // TODO - support recursive types in a union
     sum: <K extends string, A>(
       i: {GraphQL: {Named: string}, key: K, props: {[k in keyof A]: lib.Result<URI, A[k]>}}) => {
@@ -193,16 +249,16 @@ export const GQL: () => GQLAlg & {
       Named: K,
       {props: mkProps}: lib.InputOf<"dictWithResolvers", URI, P> & 
         {props: () => lib.Props<URI, P>},
-      {resolvers}: {resolvers: () => {[k in keyof R]: {server: lib.Result<URI, R[k]>}}}) => {
+      {resolvers}: {resolvers: () => {[k in keyof R]: lib.Result<URI, R[k]>}}) => {
       const ret = dict({GraphQL: {Named}, props: mkProps})
-      const props = parseProps(serverResolvers(resolvers()))
+      const props = parseProps(resolvers())
       mergeDef(Named, object(Named, props.map(t => t[1])))
       props.forEach(([k, _, r]) => {
         if (r) _resolveCache[Named] = (Named in _resolveCache)
           ? ({...(_resolveCache[Named]), [k]: r})
           : {[k]: r}
       })
-      return {resolvers: {} as any, result: ret}
+      return {resolvers: {} as any, result: ret, client: {} as any}
     }
   }
 };
@@ -226,7 +282,7 @@ const merge = (obj1: Record<string, any>, obj2: Record<string, any>) => {
 
 type GqlProg = (a: GQLAlg) => (lib.Result<URI, any> | {result: lib.Result<URI, any>})
 
-const isObject = (v: any): v is object => v && typeof v === 'object';
+const isObject = (v: any): v is object => v && typeof v === 'object' && !Array.isArray(v);
 function haltMissing(path: string[], a: Record<string, any>, b: Record<string, any>): void {
     const missing: [string[], string][] = []
     const rec = (path: string[], a: Record<string, any>, b: Record<string, any>): void => {
@@ -251,4 +307,56 @@ export const BuildSchema = <Q, M>(defs: GqlProg[], resolvers: any[]):
     (acc, e) => merge(acc, e), {} as any)
   haltMissing(["root"], interp.resolvers(), mergedResolvers)
   return ({typeDefs, resolvers: mergedResolvers})
+}
+
+  //"dictWithResolvers" | "sum"
+type GQLClientAlg = lib.Alg<"GraphQLQuery",
+  "str" | "num" | "bool" | "gqlResolver" | "nullable" |
+  "dict" | "array" | "recurse" | "gqlScalar" | "dictWithResolvers",
+  "GraphQLQuery">
+
+export const GQLClient: () => GQLClientAlg = () => {
+  const wrapDict = (p: Record<string, any>, d: Record<string, any>):
+  Record<string, any> =>
+    Object.keys(d).reduce((a, k) => ({...a, [k]: p[k](d[k])}), {})
+
+  const log = <A>(a: A, x: any = null): A => { console.log(a, x); return a }
+  return ({
+    str: () => (s) => (f) => unQueryField<"ID">()(f(toQueryField(s))),
+    bool: () => (b) => (f) => unQueryField<"ID">()(f(toQueryField(b))),
+    num: () => (n) => (f) => unQueryField<"ID">()(f(toQueryField(n))),
+    gqlResolver: ({output: o}: any) => (r) => (): any => (f: any) => unQueryField<"ID">()(
+      o(r)(f)),
+    dict: <P>({props}: lib.DictArgs<"GraphQLQuery", "GraphQLQuery", P>):
+    lib.Result<"GraphQLQuery", P> => 
+      (d: ClientResolved<P>) => <T>(f: (i: QueryField<Client<P>>) => T) =>
+        unQueryField<GetUQB<P>>()(
+          <UQFunctor<GetUQB<P>, T>>f(toQueryField(wrapDict(props(), d as any) as Client<P>))),
+    array: <A>({of}: any): lib.Result<"GraphQLQuery", A[]> =>
+      (as: A[]) => (f) => unQueryField<"List">()(as.map(a => 
+        of(a)(f)) as any),//f(toQueryField(a)))),
+    nullable: <A>(): lib.Result<"GraphQLQuery", A | null> =>
+      (a: ClientResolved<A | null>) => (f) => unQueryField<GetUQB<A | null>>()(
+        a === null ? (null as any) : f(toQueryField(a as Client<A>))),
+    recurse: <P>(): lib.Result<"GraphQLQuery", P> => 
+      (d: ClientResolved<P>) => <T>(f: (i: QueryField<Client<P>>) => T) =>
+        unQueryField<GetUQB<P>>()(<UQFunctor<GetUQB<P>, T>>f(
+          toQueryField(d as Client<P>))),
+    gqlScalar: <P>(): lib.Result<"GraphQLQuery", P> => 
+      (d: ClientResolved<P>) => <T>(f: (i: QueryField<Client<P>>) => T) =>
+        unQueryField<GetUQB<P>>()(<UQFunctor<GetUQB<P>, T>>f(
+          toQueryField(d as Client<P>))),
+    dictWithResolvers: <K extends string, P, R extends Resolvers>(
+      _: K, 
+      i: lib.InputOf<"dictWithResolvers", "GraphQLQuery", P> & 
+        {props: () => lib.Props<"GraphQLQuery", P>},
+      r: {resolvers: () => {[k in keyof R]: lib.Result<"GraphQLQuery", R[k]>}}):
+    DWR<"GraphQLQuery", K, R, P> => 
+      ({resolvers: {} as any, result: {} as any, client:
+        (d: ClientResolved<DWRClient<P, R>>) =>
+        <T>(f: (i: QueryField<Client<DWRClient<P, R>>>) => T) =>
+          unQueryField<GetUQB<DWRClient<P, R>>>()(
+            <UQFunctor<GetUQB<DWRClient<P, R>>, T>>f(toQueryField(
+              wrapDict({...i.props(), ...r.resolvers()}, d as any) as Client<DWRClient<P, R>>)))})
+  })
 }
