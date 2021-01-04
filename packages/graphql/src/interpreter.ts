@@ -308,7 +308,6 @@ export const BuildSchema = <Q, M>(defs: GqlProg[], resolvers: any[]):
   return ({typeDefs, resolvers: mergedResolvers})
 }
 
-  //"dictWithResolvers" | "sum"
 type GQLClientAlg = lib.Alg<"GraphQLQuery", Ops, "GraphQLQuery">
 
 export const GQLClient: () => GQLClientAlg = () => {
