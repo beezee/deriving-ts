@@ -42,10 +42,9 @@ type Book = lib.TypeOf<typeof BookType>
 const BookQ = HasBook(gqld.GQLClient())
 const value = <A>(x: A) => x
 const x = (b: Book) => BookQ.client({books: [b, b, b], count: 3})(({books, count}) => ({
-  count: count(value),
   bookses: books({input: {max: null}})(({ID, title, author}) => 
-    ({idLength: ID(value), id: ID(value), title: title(value)}))}))
-const y: {count: number | null, bookses: {idLength: string, id: string, title: string}[]} = 
+    ({count: count(value), idLength: ID(value), id: ID(value), title: title(value)}))}))
+const y: {bookses: {count: number | null, idLength: string, id: string, title: string}[]} = 
   x({ID: "1", title: "hi", author: "there"})
 console.log(y)
 

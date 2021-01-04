@@ -152,11 +152,10 @@ ast.UnionTypeDefinitionNode =>
     name: {kind: "Name", value: name},
     types})
 
-type GQLAlg = lib.Alg<URI,
-  "str" | "num" | "nullable" | "array" | "bool" | "sum" |
+type Ops = "str" | "num" | "nullable" | "array" | "bool" | "sum" |
   "recurse" | "dict" | "gqlResolver" | "gqlScalar" |
-  "dictWithResolvers",
-  URI>
+  "dictWithResolvers"
+type GQLAlg = lib.Alg<URI, Ops, URI>
 
 const uniqFields = <A extends {name: {value: string}}>(la: A[], ra: A[]): A[] => {
   const dedup: Record<string, A> = {}
@@ -310,10 +309,7 @@ export const BuildSchema = <Q, M>(defs: GqlProg[], resolvers: any[]):
 }
 
   //"dictWithResolvers" | "sum"
-type GQLClientAlg = lib.Alg<"GraphQLQuery",
-  "str" | "num" | "bool" | "gqlResolver" | "nullable" |
-  "dict" | "array" | "recurse" | "gqlScalar" | "dictWithResolvers",
-  "GraphQLQuery">
+type GQLClientAlg = lib.Alg<"GraphQLQuery", Ops, "GraphQLQuery">
 
 export const GQLClient: () => GQLClientAlg = () => {
   const wrapDict = (p: Record<string, any>, d: Record<string, any>):
@@ -357,6 +353,14 @@ export const GQLClient: () => GQLClientAlg = () => {
         <T>(f: (i: QueryField<Client<DWRClient<P, R>>>) => T) =>
           unQueryField<GetUQB<DWRClient<P, R>>>()(
             <UQFunctor<GetUQB<DWRClient<P, R>>, T>>f(toQueryField(
-              wrapDict({...i.props(), ...r.resolvers()}, d as any) as Client<DWRClient<P, R>>)))})
+              wrapDict({...i.props(), ...r.resolvers()}, d as any) as Client<DWRClient<P, R>>)))}),
+    sum: <K extends string, A>({props}: {props: {[k in keyof A]: lib.Result<"GraphQLQuery", A[k]>}}):
+    lib.Result<"GraphQLQuery", {[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]> => 
+      (d: ClientResolved<{[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]>) => 
+      <T>(f: (i: QueryField<Client<{[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]>>) => 
+            T) => unQueryField<GetUQB<{[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]>>()(
+            <UQFunctor<GetUQB<{[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]>, T>>f(
+              toQueryField(wrapDict(props, d as any) as Client<
+                {[k in keyof A]: A[k] & {[x in K]: k}}[keyof A]>)))
   })
 }
